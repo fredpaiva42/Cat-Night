@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.import_character_assets()
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = 0.16
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
 
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
 
     def import_character_assets(self):
         character_path = './img/character/'
-        self.animations = {'idle': [], 'run': [], 'jump': []}
+        self.animations = {'idle': [], 'run': [], 'jump': [], 'attack': [], 'attack2': []}
 
         for animation in self.animations.keys():
             full_path = character_path + animation
@@ -71,6 +71,10 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
             self.facing_right = False
+        elif keys[pygame.K_q]:
+            self.direction.x = 0.10
+        elif keys[pygame.K_w]:
+            self.direction.x = 0.11
         else:
             self.direction.x = 0
 
@@ -81,8 +85,12 @@ class Player(pygame.sprite.Sprite):
         if self.direction.y < 0:
             self.status = 'jump'
         else:
-            if self.direction.x != 0:
+            if self.direction.x == 1:
                 self.status = 'run'
+            elif self.direction.x == 0.1:
+                self.status = 'attack'
+            elif self.direction.x == 0.11:
+                self.status = 'attack2'
             else:
                 self.status = 'idle'
 
