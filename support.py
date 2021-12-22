@@ -1,11 +1,12 @@
 from csv import reader
-from settings import tile_tamanho
+from settings import tile_size
 import pygame
 from os import walk
 
+
 def import_folder(path):
     surface_list = []
-    for _,__, image_files in walk(path):
+    for _, __, image_files in walk(path):
         for image in image_files:
             full_path = path + '/' + image
             image_surf = pygame.image.load(full_path).convert_alpha()
@@ -15,27 +16,28 @@ def import_folder(path):
 
 # importa o caminho do arquivo csv
 def import_csv_layout(path):
-    chao_mapa = []
+    terrain_map = []
     with open(path) as mapa:
         level = reader(mapa, delimiter=',')
-        for linha in level:
-            chao_mapa.append(list(linha))
-        return chao_mapa
+        for row in level:
+            terrain_map.append(list(row))
+        return terrain_map
 
 
 # importa a imagem e corta
-def import_graficos_cortados(path):
-    janela = pygame.image.load(path).convert_alpha()
-    tile_num_x = int(janela.get_size()[0] / tile_tamanho)
-    tile_num_y = int(janela.get_size()[1] / tile_tamanho)
+def import_cut_graphics(path):
+    surface = pygame.image.load(path).convert_alpha()
+    tile_num_x = int(surface.get_size()[0] / tile_size)
+    tile_num_y = int(surface.get_size()[1] / tile_size)
 
-    tiles_cortados = []
-    for linha in range(tile_num_y):
-        for coluna in range(tile_num_x):
-            x = coluna * tile_tamanho
-            y = linha * tile_tamanho
-            new_janela = pygame.Surface((tile_tamanho, tile_tamanho), flags=pygame.SRCALPHA) #isso resolve o problema das camadas
-            new_janela.blit(janela, (0, 0), pygame.Rect(x, y, tile_tamanho, tile_tamanho))
-            tiles_cortados.append(new_janela)
+    cut_tiles = []
+    for row in range(tile_num_y):
+        for col in range(tile_num_x):
+            x = col * tile_size
+            y = row * tile_size
+            new_surface = pygame.Surface((tile_size, tile_size),
+                                         flags=pygame.SRCALPHA)  # isso resolve o problema das camadas
+            new_surface.blit(surface, (0, 0), pygame.Rect(x, y, tile_size, tile_size))
+            cut_tiles.append(new_surface)
 
-    return tiles_cortados
+    return cut_tiles

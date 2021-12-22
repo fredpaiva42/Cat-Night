@@ -1,6 +1,6 @@
-vertical_tile_qtd = 40
-tile_tamanho = 16
+vertical_tile_qtd = 26
+tile_size = 32
 
 
-tela_altura = vertical_tile_qtd * tile_tamanho
-tela_largura = 1200
+screen_height = vertical_tile_qtd * tile_size
+screen_width = 1400

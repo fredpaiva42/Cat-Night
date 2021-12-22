@@ -1,11 +1,11 @@
 import pygame
 from support import import_folder
 
-class Tile(pygame.sprite.Sprite):
-    def __init__(self, tamanho, x, y):
-        super().__init__()
-        self.image = pygame.Surface((tamanho, tamanho))
 
+class Tile(pygame.sprite.Sprite):
+    def __init__(self, size, x, y):
+        super().__init__()
+        self.image = pygame.Surface((size, size))
         self.rect = self.image.get_rect(topleft=(x, y))
 
     # faz o cenário se mover
@@ -14,13 +14,14 @@ class Tile(pygame.sprite.Sprite):
 
 
 class StaticTile(Tile):  # herda da classe Tile
-    def __init__(self, tamanho, x, y, janela):
-        super().__init__(tamanho, x, y)
-        self.image = janela
+    def __init__(self, size, x, y, surface):
+        super().__init__(size, x, y)
+        self.image = surface
+
 
 class AnimatedTile(Tile):
-    def __init__(self, tamanho, x, y, path):
-        super().__init__(tamanho, x, y)
+    def __init__(self, size, x, y, path):
+        super().__init__(size, x, y)
         self.frames = import_folder(path)
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
@@ -34,7 +35,3 @@ class AnimatedTile(Tile):
     def update(self, shift):
         self.animate()
         self.rect.x -= shift
-
-
-
-
