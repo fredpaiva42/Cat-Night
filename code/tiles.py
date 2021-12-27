@@ -35,3 +35,5 @@ class AnimatedTile(Tile):
     def update(self, shift):
         self.animate()
         self.rect.x -= shift
+
+

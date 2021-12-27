@@ -1,23 +1,46 @@
 import pygame
 from support import import_csv_layout, import_cut_graphics
-from settings import tile_size, screen_height, screen_width
+from settings import tile_size, screen_height, screen_width, screen
 from tiles import Tile, StaticTile
 from player import Player
 from decoration import Water
+from enemy import Enemy
+from game_data import characters
+from particles import ParticleEffect
+from ui import UI
 
 
 class Level:
-    def __init__(self, level_data, surface):
+    def __init__(self, current_character, surface, create_selection, change_health, bar_health_reset, cur_health):
         # configuração geral
         self.display_surface = surface
         self.world_shift = 0
         self.current_x = None
+        self.create_selection = create_selection
+        self.change_health = change_health
+        self.bar_health_reset = bar_health_reset
+        self.cur_health = cur_health
+
+
+        # selection connection
+        self.create_selection = create_selection
+        self.current_character = current_character
+        level_data = characters[self.current_character]
+        self.new_max_character = level_data['unlock']
 
         # player
         player_layout = import_csv_layout(level_data['player'])
-        self.player = pygame.sprite.GroupSingle()
+        self.player_sprite = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
-        self.player_setup(player_layout)
+        self.player_setup(player_layout, change_health, bar_health_reset, cur_health)
+
+        # dust
+        self.dust_sprite = pygame.sprite.GroupSingle()
+        self.player_on_ground = False
+
+        # rat death
+        self.death_sprite = pygame.sprite.Group()
+        self.cat_death_sprite = pygame.sprite.Group()
 
         # CENA 1
 
@@ -90,6 +113,14 @@ class Level:
         jardim_casa1_layout = import_csv_layout(level_data['jardim_casa1'])
         self.jardim_casa1_sprite = self.create_tile_group(jardim_casa1_layout, 'jardim_casa1')
 
+        # enemies
+        enemy_layout = import_csv_layout(level_data['enemies'])
+        self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
+
+        # constraints
+        constraints_layout = import_csv_layout(level_data['constraints'])
+        self.constraints_sprites = self.create_tile_group(constraints_layout, 'constraints')
+
         # decoration
         level_width = (len(chao_layout[0]) - 77.5) * tile_size
         self.water = Water(screen_height - 35, level_width)
@@ -141,8 +172,8 @@ class Level:
 
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
-        tile_list_all = import_cut_graphics('img/background/mp_cs_tilemap_all 1.png')
-        tile_list_vegetation = import_cut_graphics('img/background/mp_cs_vegetation 1.png')
+        tile_list_all = import_cut_graphics('./img/background/mp_cs_tilemap_all 1.png')
+        tile_list_vegetation = import_cut_graphics('./img/background/mp_cs_vegetation 1.png')
 
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
@@ -290,60 +321,73 @@ class Level:
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
+                    if type == 'enemies':
+                        sprite = Enemy(tile_size, x, y, './img/enemies/rat/run', 'run')
+                        sprite_group.add(sprite)
+
+                    if type == 'constraints':
+                        sprite = Tile(tile_size, x, y)
+                        sprite_group.add(sprite)
+
         return sprite_group
 
-    def player_setup(self, layout):
+    def player_setup(self, layout, change_health, bar_health_reset, cur_health):
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
                 x = col_index * tile_size
                 y = row_index * tile_size
                 if val == '0':
-                    sprite = Player((x, y), self.display_surface)
-                    self.player.add(sprite)
+                    sprite = Player((x, y), self.display_surface, self.current_character, self.create_jump_particles,
+                                    change_health, bar_health_reset, cur_health)
+                    self.player_sprite.add(sprite)
+
+    def enemy_collision_reverse(self):
+        for enemy in self.enemy_sprites.sprites():
+            if pygame.sprite.spritecollide(enemy, self.constraints_sprites, False):
+                enemy.reverse()
+
+    def create_jump_particles(self, pos):
+        if self.player.sprite.facing_right:
+            pos -= pygame.math.Vector2(10, 5)
+        else:
+            pos += pygame.math.Vector2(10, -5)
+        jump_particle_sprite = ParticleEffect(pos, 'jump')
+        self.dust_sprite.add(jump_particle_sprite)
 
     def horizontal_movement_collision(self):
-        player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed
+        player = self.player_sprite.sprite
+        player.collision_rect.x += player.direction.x * player.speed
         collidable_sprites = self.chao_sprite.sprites() + self.transicao_sprite.sprites() + self.chao_cena2_sprite.sprites() + self.predio_verde_sprite.sprites() + self.predio_azul_sprite.sprites() + self.predio_rosa_sprite.sprites() + self.parede_preta_sprite.sprites()
         for sprite in collidable_sprites:
-            if sprite.rect.colliderect(player.rect):
+            if sprite.rect.colliderect(player.collision_rect):
                 if player.direction.x < 0:
-                    player.rect.left = sprite.rect.right
+                    player.collision_rect.left = sprite.rect.right
                     player.on_left = True
-                    self.current_x = player.rect.left
                 elif player.direction.x > 0:
-                    player.rect.right = sprite.rect.left
+                    player.collision_rect.right = sprite.rect.left
                     player.on_right = True
-                    self.current_x = player.rect.right
-
-        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):
-            player.on_left = False
-        if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
-            player.on_right = False
 
     def vertical_movement_collision(self):
-        player = self.player.sprite
+        player = self.player_sprite.sprite
         player.apply_gravity()
         collidable_sprites = self.chao_sprite.sprites() + self.transicao_sprite.sprites() + self.chao_cena2_sprite.sprites() + self.predio_verde_sprite.sprites() + self.predio_azul_sprite.sprites() + self.predio_rosa_sprite.sprites() + self.parede_preta_sprite.sprites()
 
         for sprite in collidable_sprites:
-            if sprite.rect.colliderect(player.rect):
+            if sprite.rect.colliderect(player.collision_rect):
                 if player.direction.y > 0:
-                    player.rect.bottom = sprite.rect.top
+                    player.collision_rect.bottom = sprite.rect.top
                     player.direction.y = 0
                     player.on_ground = True
                 elif player.direction.y < 0:
-                    player.rect.top = sprite.rect.bottom
+                    player.collision_rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
-        if player.on_ceiling and player.direction.y > 0.1:
-            player.on_ceiling = False
 
     def scroll_x(self):
-        player = self.player.sprite
+        player = self.player_sprite.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
 
@@ -358,10 +402,47 @@ class Level:
             player.speed = 6
 
     def get_player_on_ground(self):
-        if self.player.sprite.on_ground:
-            self.player_on_ground = True
+        if self.player_sprite.sprite.on_ground:
+            self.player_sprite_on_ground = True
         else:
-            self.player_on_ground = False
+            self.player_sprite_on_ground = False
+
+    def create_landing_dust(self):
+        if not self.player_on_ground and self.player.sprite.on_ground and not self.dust_sprite.sprites():
+            if self.player.sprite.facing_right:
+                offset = pygame.math.Vector2(10, 15)
+            else:
+                offset = pygame.math.Vector2(-10, 15)
+            fall_dust_particle = ParticleEffect(self.player.sprite.rect.midbottom - offset, 'land')
+            self.dust_sprite.add(fall_dust_particle)
+
+    def check_death(self):
+        if self.player_sprite.sprite.rect.top > screen_height:
+            self.create_selection(self.current_character, 0)
+            print(self.bar_health_reset(self.cur_health))
+            self.status = 'selection'
+
+
+
+    def check_win(self):
+        if pygame.sprite.spritecollide(self.player_sprite.sprite, self.goal, False):
+            self.create_selection(self.current_character, self.new_max_character)
+
+    def check_enemy_collisions(self):
+        enemy_collisions = pygame.sprite.spritecollide(self.player_sprite.sprite, self.enemy_sprites, False)
+
+        if enemy_collisions:
+            for enemy in enemy_collisions:
+                enemy_center = enemy.rect.centery
+                enemy_top = enemy.rect.top
+                player_bottom = self.player_sprite.sprite.rect.bottom
+
+                if enemy_top < player_bottom < enemy_center and self.player_sprite.sprite.direction.y >= 0:
+                    death_sprite = ParticleEffect(enemy.rect.center, 'death')
+                    self.death_sprite.add(death_sprite)
+                    enemy.kill()
+                else:
+                    self.player_sprite.sprite.get_damage()
 
     def run(self):
         # onde vou executar o nivel
@@ -440,13 +521,26 @@ class Level:
         self.jardim_casa1_sprite.update(self.world_shift)
         self.jardim_casa1_sprite.draw(self.display_surface)
 
+        # enemies
+        self.enemy_sprites.update(self.world_shift)
+        self.constraints_sprites.update(self.world_shift)
+        self.enemy_collision_reverse()
+        self.enemy_sprites.draw(self.display_surface)
+        self.death_sprite.update(self.world_shift)
+        self.death_sprite.draw(self.display_surface)
+
+        # dust particles
+        self.dust_sprite.update(self.world_shift)
+        self.dust_sprite.draw(self.display_surface)
+
         # player
-        self.player.update()
+        self.player_sprite.update()
+        self.player_sprite.sprite.arrows.draw(self.display_surface)
         self.horizontal_movement_collision()
         self.get_player_on_ground()
         self.vertical_movement_collision()
         self.scroll_x()
-        self.player.draw(self.display_surface)
+        self.player_sprite.draw(self.display_surface)
 
         # water
         self.water.draw(self.display_surface, self.world_shift)
@@ -496,3 +590,8 @@ class Level:
         # props_cena2
         self.props_cena2_sprite.update(self.world_shift)
         self.props_cena2_sprite.draw(self.display_surface)
+
+        self.check_death()
+        self.check_win()
+
+        self.check_enemy_collisions()
