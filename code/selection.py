@@ -21,7 +21,7 @@ class Node(pygame.sprite.Sprite):
                                           icon_speed, icon_speed)
 
     def animate(self):
-        self.frames_index += 0.15
+        self.frames_index += 0.1
         if self.frames_index >= len(self.frames):
             self.frames_index = 0
         self.image = self.frames[int(self.frames_index)]
@@ -36,11 +36,10 @@ class Node(pygame.sprite.Sprite):
 
 
 class Icon(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, path):
         super().__init__()
         self.pos = pos
-        self.image = pygame.Surface((20, 20))
-        self.image.fill('blue')
+        self.image = pygame.image.load(path)
         self.rect = self.image.get_rect(center=pos)
 
     def update(self):
@@ -86,7 +85,7 @@ class Selection:
 
     def setup_icon(self):
         self.icon = pygame.sprite.GroupSingle()
-        icon_sprite = Icon(self.nodes.sprites()[self.current_character].rect.center)
+        icon_sprite = Icon(self.nodes.sprites()[self.current_character].rect.center, './img/buttons/yes.png')
         self.icon.add(icon_sprite)
 
     def input(self):

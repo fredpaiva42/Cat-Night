@@ -31,7 +31,7 @@ king = {
     'props_cena2': "./niveis/level_0/level_0_cena2_props_cena2.csv",
     'constraints': "./niveis/level_0/level_0_constraints.csv",
     'enemies': "./niveis/level_0/level_0_enemies.csv",
-    'node_pos': (225, 400),
+    'node_pos': (225, 500),
     'unlock': 1,
     'node_graphics': "./img/selection/0",
 }
@@ -68,7 +68,7 @@ knight = {
     'props_cena2': "./niveis/level_0/level_0_cena2_props_cena2.csv",
     'constraints': "./niveis/level_0/level_0_constraints.csv",
     'enemies': "./niveis/level_0/level_0_enemies.csv",
-    'node_pos': (725, 400),
+    'node_pos': (550, 500),
     'unlock': 2,
     'node_graphics': "./img/selection/1",
 }
@@ -105,7 +105,7 @@ meowolas = {
     'props_cena2': "./niveis/level_0/level_0_cena2_props_cena2.csv",
     'constraints': "./niveis/level_0/level_0_constraints.csv",
     'enemies': "./niveis/level_0/level_0_enemies.csv",
-    'node_pos': (1225, 400),
+    'node_pos': (875, 500),
     'unlock': 3,
     'node_graphics': "./img/selection/2",
 }
@@ -142,7 +142,7 @@ mage = {
     'props_cena2': "./niveis/level_0/level_0_cena2_props_cena2.csv",
     'constraints': "./niveis/level_0/level_0_constraints.csv",
     'enemies': "./niveis/level_0/level_0_enemies.csv",
-    'node_pos': (1725, 400),
+    'node_pos': (1200, 500),
     'unlock': 4,
     'node_graphics': "./img/selection/3",
 }

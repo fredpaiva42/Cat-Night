@@ -23,7 +23,7 @@ class UI:
 
         # inventory
         self.inventory = pygame.image.load('./ui/inventario.png').convert_alpha()
-        self.inventory_rect = self.inventory.get_rect(center=(975, 60))
+        self.inventory_rect = self.inventory.get_rect(center=(725, 60))
 
     def show_health(self, current, full):
         self.display_surface.blit(self.health_bar, (20, 10))

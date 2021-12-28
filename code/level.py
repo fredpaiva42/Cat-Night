@@ -21,7 +21,6 @@ class Level:
         self.bar_health_reset = bar_health_reset
         self.cur_health = cur_health
 
-
         # selection connection
         self.create_selection = create_selection
         self.current_character = current_character
@@ -419,14 +418,13 @@ class Level:
     def check_death(self):
         if self.player_sprite.sprite.rect.top > screen_height:
             self.create_selection(self.current_character, 0)
-            print(self.bar_health_reset(self.cur_health))
+            self.bar_health_reset(self.cur_health)
             self.status = 'selection'
-
-
 
     def check_win(self):
         if pygame.sprite.spritecollide(self.player_sprite.sprite, self.goal, False):
             self.create_selection(self.current_character, self.new_max_character)
+            print("Win")
 
     def check_enemy_collisions(self):
         enemy_collisions = pygame.sprite.spritecollide(self.player_sprite.sprite, self.enemy_sprites, False)
@@ -437,12 +435,21 @@ class Level:
                 enemy_top = enemy.rect.top
                 player_bottom = self.player_sprite.sprite.rect.bottom
 
-                if enemy_top < player_bottom < enemy_center and self.player_sprite.sprite.direction.y >= 0:
+                if (enemy_top < player_bottom < enemy_center and self.player_sprite.sprite.direction.y >= 0) or self.player_sprite.sprite.attack:
                     death_sprite = ParticleEffect(enemy.rect.center, 'death')
                     self.death_sprite.add(death_sprite)
                     enemy.kill()
                 else:
-                    self.player_sprite.sprite.get_damage()
+                     self.player_sprite.sprite.get_damage()
+
+
+    def collision_check(self):
+        if self.player_sprite.sprite.arrows:
+            for arrow in self.player_sprite.sprite.arrows:
+                if pygame.sprite.spritecollide(arrow, self.enemy_sprites, True):
+                    death_sprite = ParticleEffect(arrow.rect.center, 'death')
+                    self.death_sprite.add(death_sprite)
+                    arrow.kill()
 
     def run(self):
         # onde vou executar o nivel
@@ -591,7 +598,8 @@ class Level:
         self.props_cena2_sprite.update(self.world_shift)
         self.props_cena2_sprite.draw(self.display_surface)
 
-        self.check_death()
         self.check_win()
+        self.check_death()
 
         self.check_enemy_collisions()
+        self.collision_check()

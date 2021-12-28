@@ -27,11 +27,11 @@ class Player(pygame.sprite.Sprite):
         # Arrow setup
         self.ready = True
         self.arrow_time = 0
-        self.arrow_cooldown = 600
+        self.arrow_cooldown = 800
         self.arrows = pygame.sprite.Group()
 
         # Fireball setup
-        self.fire_cooldown = 600
+        self.fire_cooldown = 800
         self.fires = pygame.sprite.Group()
 
         # player movement
@@ -39,12 +39,13 @@ class Player(pygame.sprite.Sprite):
         self.speed = 8
         self.gravity = 0.8
         self.jump_speed = -18
-        self.collision_rect = pygame.Rect(self.rect.topleft, (50, self.rect.height))  # depois preciso padronizar
+        self.collision_rect = pygame.Rect(self.rect.topleft, (55, self.rect.height))  # depois preciso padronizar
         # todos os sprites dos gatos com o mesmo tamanho, ai vai ficar perfeito (mudar o 50)
 
         # player status
         self.status = 'idle'
         self.facing_right = True
+        self.attack = True
         self.on_ground = False
         self.on_ceiling = False
         self.on_left = False
@@ -136,11 +137,14 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
             self.facing_right = True
+            self.attack = False
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
             self.facing_right = False
+            self.attack = False
         elif keys[pygame.K_q]:
-            self.direction.x = 0.10
+            self.direction.x = 0.01
+            self.attack = True
             if self.current_character == 3 and self.ready:
                 if self.facing_right:
                     self.shoot_fire(self.speed)
@@ -149,7 +153,8 @@ class Player(pygame.sprite.Sprite):
                 self.ready = False
                 self.arrow_time = pygame.time.get_ticks()
         elif keys[pygame.K_w]:
-            self.direction.x = 0.11
+            self.direction.x = 0.009
+            self.attack = True
             if self.current_character == 2 and self.ready:
                 if self.facing_right:
                     self.shoot_arrow(self.speed, './img/character/meowolas/arrow/right/')
@@ -159,9 +164,11 @@ class Player(pygame.sprite.Sprite):
                 self.arrow_time = pygame.time.get_ticks()
         else:
             self.direction.x = 0
-
         if keys[pygame.K_SPACE] and self.on_ground:
+            self.attack = False
             self.jump()
+
+
 
     def get_status(self):
         if self.direction.y < 0:
@@ -171,9 +178,9 @@ class Player(pygame.sprite.Sprite):
         else:
             if self.direction.x == 1 or self.direction.x == -1:
                 self.status = 'run'
-            elif self.direction.x == 0.1:
+            elif self.direction.x == 0.01:
                 self.status = 'attack'
-            elif self.direction.x == 0.11:
+            elif self.direction.x == 0.009:
                 self.status = 'attack2'
             else:
                 self.status = 'idle'
@@ -189,6 +196,7 @@ class Player(pygame.sprite.Sprite):
         if not self.invincible:
             self.change_health(-10)
             self.invincible = True
+            self.attack = False
             self.hurt_time = pygame.time.get_ticks()
 
     def invincibility_timer(self):
@@ -196,6 +204,7 @@ class Player(pygame.sprite.Sprite):
             current_time = pygame.time.get_ticks()
             if current_time - self.hurt_time >= self.invincibility_duration:
                 self.invincible = False
+
 
     def recharge(self):
         if not self.ready:
