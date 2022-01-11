@@ -171,8 +171,8 @@ class Level:
 
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
-        tile_list_all = import_cut_graphics('./img/background/mp_cs_tilemap_all 1.png')
-        tile_list_vegetation = import_cut_graphics('./img/background/mp_cs_vegetation 1.png')
+        tile_list_all = import_cut_graphics('../img/background/mp_cs_tilemap_all 1.png')
+        tile_list_vegetation = import_cut_graphics('../img/background/mp_cs_vegetation 1.png')
 
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
@@ -321,7 +321,7 @@ class Level:
                         sprite_group.add(sprite)
 
                     if type == 'enemies':
-                        sprite = Enemy(tile_size, x, y, './img/enemies/rat/run', 'run')
+                        sprite = Enemy(tile_size, x, y, '../img/enemies/rat/run', 'run')
                         sprite_group.add(sprite)
 
                     if type == 'constraints':

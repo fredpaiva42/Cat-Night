@@ -8,16 +8,16 @@ class Menu:
         self.display_surface = surface
         self.game = Game()
 
-        self.bg = pygame.image.load("./img/background/img_menu.png").convert()
+        self.bg = pygame.image.load("../img/background/img_menu.png").convert()
 
         self.click = False
 
         # buttons
-        self.button_play = pygame.image.load("./img/buttons/start.png").convert_alpha()
+        self.button_play = pygame.image.load("../img/buttons/start.png").convert_alpha()
         self.button_play_rect = self.button_play.get_rect(center=(1120, 380))
-        self.button_options = pygame.image.load("./img/buttons/options.png").convert_alpha()
+        self.button_options = pygame.image.load("../img/buttons/options.png").convert_alpha()
         self.button_options_rect = self.button_options.get_rect(center=(1120, 515))
-        self.button_exit = pygame.image.load("./img/buttons/exit.png").convert_alpha()
+        self.button_exit = pygame.image.load("../img/buttons/exit.png").convert_alpha()
         self.button_exit_rect = self.button_exit.get_rect(center=(1120, 650))
 
     def show_buttons(self):
