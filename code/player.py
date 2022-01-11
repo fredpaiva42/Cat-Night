@@ -63,35 +63,35 @@ class Player(pygame.sprite.Sprite):
         self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'attack': [], 'attack2': [], 'damage': [],
                            'death': []}
         if self.current_character == 0:
-            character_path = './img/character/king/'
+            character_path = '../img/character/king/'
 
             for animation in self.animations.keys():
                 full_path = character_path + animation
                 self.animations[animation] = import_folder(full_path)
 
         if self.current_character == 1:
-            character_path = './img/character/knight/'
+            character_path = '../img/character/knight/'
 
             for animation in self.animations.keys():
                 full_path = character_path + animation
                 self.animations[animation] = import_folder(full_path)
 
         if self.current_character == 2:
-            character_path = './img/character/meowolas/'
+            character_path = '../img/character/meowolas/'
 
             for animation in self.animations.keys():
                 full_path = character_path + animation
                 self.animations[animation] = import_folder(full_path)
 
         if self.current_character == 3:
-            character_path = './img/character/mage/'
+            character_path = '../img/character/mage/'
 
             for animation in self.animations.keys():
                 full_path = character_path + animation
                 self.animations[animation] = import_folder(full_path)
 
     def import_dust_run_particles(self):
-        self.dust_run_particles = import_folder('./img/character/dust_particles/run')
+        self.dust_run_particles = import_folder('../img/character/dust_particles/run')
 
     def animate(self):
         if self.invincible:
@@ -157,9 +157,9 @@ class Player(pygame.sprite.Sprite):
             self.attack = True
             if self.current_character == 2 and self.ready:
                 if self.facing_right:
-                    self.shoot_arrow(self.speed, './img/character/meowolas/arrow/right/')
+                    self.shoot_arrow(self.speed, '../img/character/meowolas/arrow/right/')
                 else:
-                    self.shoot_arrow(-self.speed, './img/character/meowolas/arrow/left/')
+                    self.shoot_arrow(-self.speed, '../img/character/meowolas/arrow/left/')
                 self.ready = False
                 self.arrow_time = pygame.time.get_ticks()
         else:

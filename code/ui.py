@@ -6,14 +6,14 @@ class UI:
         # setup
         self.display_surface = surface
         self.current_character = current_character
-        self.path = './ui/stats0.png'
+        self.path = '../ui/stats0.png'
 
         if self.current_character == 1:
-            self.path = './ui/stats.png'
+            self.path = '../ui/stats.png'
         if self.current_character == 2:
-            self.path = './ui/stats2.png'
+            self.path = '../ui/stats2.png'
         if self.current_character == 3:
-            self.path = './ui/stats3.png'
+            self.path = '../ui/stats3.png'
 
         # health
         self.health_bar = pygame.image.load(self.path).convert_alpha()
@@ -22,7 +22,7 @@ class UI:
         self.bar_height = 8
 
         # inventory
-        self.inventory = pygame.image.load('./ui/inventario.png').convert_alpha()
+        self.inventory = pygame.image.load('../ui/inventario.png').convert_alpha()
         self.inventory_rect = self.inventory.get_rect(center=(725, 60))
 
     def show_health(self, current, full):

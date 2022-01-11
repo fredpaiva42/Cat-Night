@@ -17,7 +17,7 @@ class Fireball(pygame.sprite.Sprite):
 
     def import_character_assets(self):
         self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'attack': [], 'attack2': [], 'fire': []}
-        character_path = './img/character/mage/'
+        character_path = '../img/character/mage/'
 
         for animation in self.animations.keys():
             full_path = character_path + animation

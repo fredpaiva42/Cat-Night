@@ -14,7 +14,7 @@ pygame.init()
 menu = Menu(screen)
 clock = pygame.time.Clock()
 game = Game()
-bg = pygame.image.load("./img/background/selection_menu.png").convert()
+bg = pygame.image.load("../img/background/selection_menu.png").convert()
 
 while True:
     for event in pygame.event.get():

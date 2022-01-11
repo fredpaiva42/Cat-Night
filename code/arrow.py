@@ -16,7 +16,7 @@ class Arrow(pygame.sprite.Sprite):
 
     def import_character_assets(self):
         self.animations = {'idle': [], 'run': [], 'jump': [], 'fall': [], 'attack': [], 'attack2': [], 'eletric arrow': []}
-        character_path = './img/character/meowolas/'
+        character_path = '../img/character/meowolas/'
 
         for animation in self.animations.keys():
             full_path = character_path + animation

@@ -13,7 +13,7 @@ class Water:
         for tile in range(tile_x_amount):
             x = tile * water_tile_width + water_start
             y = top
-            sprite = AnimatedTile(192, x, y, './img/background/decoration/')
+            sprite = AnimatedTile(192, x, y, '../img/background/decoration/')
             self.water_sprites.add(sprite)
 
     def draw(self, surface, shift):

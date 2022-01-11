@@ -8,11 +8,11 @@ class ParticleEffect(pygame.sprite.Sprite):
         self.frame_index = 0
         self.animation_speed = 0.12
         if type == 'jump':
-            self.frames = import_folder('../graphics/character/dust_particles/jump')
+            self.frames = import_folder('../img/character/dust_particles/jump')
         if type == 'land':
-            self.frames = import_folder('../graphics/character/dust_particles/land')
+            self.frames = import_folder('../img/character/dust_particles/land')
         if type == 'death':
-            self.frames = import_folder('./img/enemies/rat/death')
+            self.frames = import_folder('../img/enemies/rat/death')
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(center=pos)
 

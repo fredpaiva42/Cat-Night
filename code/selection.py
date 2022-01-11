@@ -85,7 +85,7 @@ class Selection:
 
     def setup_icon(self):
         self.icon = pygame.sprite.GroupSingle()
-        icon_sprite = Icon(self.nodes.sprites()[self.current_character].rect.center, './img/buttons/yes.png')
+        icon_sprite = Icon(self.nodes.sprites()[self.current_character].rect.center, '../img/buttons/yes.png')
         self.icon.add(icon_sprite)
 
     def input(self):
