@@ -11,6 +11,7 @@ import settings
 
 # Pygame setup
 pygame.init()
+pygame.display.set_caption('Cat Night')
 menu = Menu(screen)
 clock = pygame.time.Clock()
 game = Game()

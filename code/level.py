@@ -112,6 +112,62 @@ class Level:
         jardim_casa1_layout = import_csv_layout(level_data['jardim_casa1'])
         self.jardim_casa1_sprite = self.create_tile_group(jardim_casa1_layout, 'jardim_casa1')
 
+        # escada
+        escada_layout = import_csv_layout(level_data['escada'])
+        self.escada_sprites = self.create_tile_group(escada_layout, 'escada')
+
+        # sombras
+        sombras_layout = import_csv_layout(level_data['sombras'])
+        self.sombras_sprites = self.create_tile_group(sombras_layout, 'sombras')
+
+        # casa 3
+        casa_3_layout = import_csv_layout(level_data['casa_3'])
+        self.casa_3_sprites = self.create_tile_group(casa_3_layout, 'casa_3')
+
+        # extra casa 3
+        extra_casa3_layout = import_csv_layout(level_data['extra_casa3'])
+        self.extra_casa3_sprites = self.create_tile_group(extra_casa3_layout, 'extra_casa3')
+
+        # jardim casa 3
+        jardim_casa3_layout = import_csv_layout(level_data['jardim_casa3'])
+        self.jardim_casa3_sprites = self.create_tile_group(jardim_casa3_layout, 'jardim_casa3')
+
+        # grades cima
+        grades_cima_layout = import_csv_layout(level_data['grades_cima'])
+        self.grades_cima_sprites = self.create_tile_group(grades_cima_layout, 'grades_cima')
+
+        # grades extra
+        grades_extra_layout = import_csv_layout(level_data['grades_extra'])
+        self.grades_extra_sprites = self.create_tile_group(grades_extra_layout, 'grades_extra')
+
+        # extra predio 4
+        extra_predio4_layout = import_csv_layout(level_data['extra_predio4'])
+        self.extra_predio4_sprites = self.create_tile_group(extra_predio4_layout, 'extra_predio4')
+
+        # predio 4
+        predio_4_layout = import_csv_layout(level_data['predio_4'])
+        self.predio_4_sprites = self.create_tile_group(predio_4_layout, 'predio_4')
+
+        # subsolo_emcima
+        subsolo_emcima_layout = import_csv_layout(level_data['subsolo_emcima'])
+        self.subsolo_emcima_sprites = self.create_tile_group(subsolo_emcima_layout, 'subsolo_emcima')
+
+        # subsolo
+        subsolo_layout = import_csv_layout(level_data['subsolo'])
+        self.subsolo_sprites = self.create_tile_group(subsolo_layout, 'subsolo')
+
+        # parede subsolo
+        parede_subsolo_layout = import_csv_layout(level_data['parede_subsolo'])
+        self.parede_subsolo_sprites = self.create_tile_group(parede_subsolo_layout, 'parede_subsolo')
+
+        # estrelas
+        estrelas_layout = import_csv_layout(level_data['estrelas'])
+        self.estrelas_sprites = self.create_tile_group(estrelas_layout, 'estrelas')
+
+        # casa 3
+        casa_3_layout = import_csv_layout(level_data['casa_3'])
+        self.casa_3_sprites = self.create_tile_group(casa_3_layout, 'casa_3')
+
         # enemies
         enemy_layout = import_csv_layout(level_data['enemies'])
         self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
@@ -122,52 +178,8 @@ class Level:
 
         # decoration
         level_width = (len(chao_layout[0]) - 77.5) * tile_size
-        self.water = Water(screen_height - 35, level_width)
+        #self.water = Water(screen_height - 35, level_width)
 
-        # TRANSIÇÃO PARA CENA 2
-        transicao_layout = import_csv_layout(level_data['transicao'])
-        self.transicao_sprite = self.create_tile_group(transicao_layout, 'transicao')
-
-        # CENA 2
-        # parede_preta
-        parede_preta_layout = import_csv_layout(level_data['parede_preta'])
-        self.parede_preta_sprite = self.create_tile_group(parede_preta_layout, 'parede_preta')
-
-        # predio_rosa
-        predio_rosa_layout = import_csv_layout(level_data['predio_rosa'])
-        self.predio_rosa_sprite = self.create_tile_group(predio_rosa_layout, 'predio_rosa')
-
-        # predio_azul
-        predio_azul_layout = import_csv_layout(level_data['predio_azul'])
-        self.predio_azul_sprite = self.create_tile_group(predio_azul_layout, 'predio_azul')
-
-        # chão cena 2
-        chao_cena2_layout = import_csv_layout(level_data['chao_cena2'])
-        self.chao_cena2_sprite = self.create_tile_group(chao_cena2_layout, 'chao_cena2')
-
-        # predio_verde
-        predio_verde_layout = import_csv_layout(level_data['predio_verde'])
-        self.predio_verde_sprite = self.create_tile_group(predio_verde_layout, 'predio_verde')
-
-        # predio_marron
-        predio_marron_layout = import_csv_layout(level_data['predio_marron'])
-        self.predio_marron_sprite = self.create_tile_group(predio_marron_layout, 'predio_marron')
-
-        # predio_vermelho
-        predio_vermelho_layout = import_csv_layout(level_data['predio_vermelho'])
-        self.predio_vermelho_sprite = self.create_tile_group(predio_vermelho_layout, 'predio_vermelho')
-
-        # vegetacao
-        vegetacao_layout = import_csv_layout(level_data['vegetacao'])
-        self.vegetacao_sprite = self.create_tile_group(vegetacao_layout, 'vegetacao')
-
-        # portas_janelas_cena2
-        portas_janelas_cena2_layout = import_csv_layout(level_data['portas_janelas_cena2'])
-        self.portas_janelascena2_sprite = self.create_tile_group(portas_janelas_cena2_layout, 'portas_janelas_cena2')
-
-        # props_cena2
-        props_cena2_layout = import_csv_layout(level_data['props_cena2'])
-        self.props_cena2_sprite = self.create_tile_group(props_cena2_layout, 'props_cena2')
 
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
@@ -265,57 +277,67 @@ class Level:
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
-                    if type == 'transicao':
+                    if type == 'escada':
                         tile_surface = tile_list_all[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
-                    if type == 'parede_preta':
+                    if type == 'sombras':
                         tile_surface = tile_list_all[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
-                    if type == 'predio_rosa':
+                    if type == 'casa_3':
                         tile_surface = tile_list_all[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
-                    if type == 'predio_azul':
+                    if type == 'extra_casa3':
                         tile_surface = tile_list_all[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
-                    if type == 'chao_cena2':
-                        tile_surface = tile_list_all[int(val)]
-                        sprite = StaticTile(tile_size, x, y, tile_surface)
-                        sprite_group.add(sprite)
-
-                    if type == 'predio_verde':
-                        tile_surface = tile_list_all[int(val)]
-                        sprite = StaticTile(tile_size, x, y, tile_surface)
-                        sprite_group.add(sprite)
-
-                    if type == 'predio_marron':
-                        tile_surface = tile_list_all[int(val)]
-                        sprite = StaticTile(tile_size, x, y, tile_surface)
-                        sprite_group.add(sprite)
-
-                    if type == 'predio_vermelho':
-                        tile_surface = tile_list_all[int(val)]
-                        sprite = StaticTile(tile_size, x, y, tile_surface)
-                        sprite_group.add(sprite)
-
-                    if type == 'vegetacao':
+                    if type == 'jardim_casa3':
                         tile_surface = tile_list_vegetation[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
-                    if type == 'portas_janelas_cena2':
+                    if type == 'grades_cima':
                         tile_surface = tile_list_all[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
-                    if type == 'props_cena2':
+                    if type == 'grades_extra':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'extra_predio4':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'predio_4':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'subsolo_emcima':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'subsolo':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'parede_subsolo':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'estrelas':
                         tile_surface = tile_list_all[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
@@ -356,7 +378,7 @@ class Level:
     def horizontal_movement_collision(self):
         player = self.player_sprite.sprite
         player.collision_rect.x += player.direction.x * player.speed
-        collidable_sprites = self.chao_sprite.sprites() + self.transicao_sprite.sprites() + self.chao_cena2_sprite.sprites() + self.predio_verde_sprite.sprites() + self.predio_azul_sprite.sprites() + self.predio_rosa_sprite.sprites() + self.parede_preta_sprite.sprites()
+        collidable_sprites = self.chao_sprite.sprites() + self.escada_sprites.sprites()
         for sprite in collidable_sprites:
             if sprite.rect.colliderect(player.collision_rect):
                 if player.direction.x < 0:
@@ -369,7 +391,7 @@ class Level:
     def vertical_movement_collision(self):
         player = self.player_sprite.sprite
         player.apply_gravity()
-        collidable_sprites = self.chao_sprite.sprites() + self.transicao_sprite.sprites() + self.chao_cena2_sprite.sprites() + self.predio_verde_sprite.sprites() + self.predio_azul_sprite.sprites() + self.predio_rosa_sprite.sprites() + self.parede_preta_sprite.sprites()
+        collidable_sprites = self.chao_sprite.sprites() + self.escada_sprites.sprites()
 
         for sprite in collidable_sprites:
             if sprite.rect.colliderect(player.collision_rect):
@@ -460,21 +482,61 @@ class Level:
 
         # CENA 1
 
-        # chão
-        self.chao_sprite.update(self.world_shift)
-        self.chao_sprite.draw(self.display_surface)
+        # parede subsolo
+        self.parede_subsolo_sprites.update(self.world_shift)
+        self.parede_subsolo_sprites.draw(self.display_surface)
+
+        # estrelas
+        self.estrelas_sprites.update(self.world_shift)
+        self.estrelas_sprites.draw(self.display_surface)
 
         # nuvens
         self.nuvens_sprite.update(self.world_shift)
         self.nuvens_sprite.draw(self.display_surface)
 
+        # chão
+        self.chao_sprite.update(self.world_shift)
+        self.chao_sprite.draw(self.display_surface)
+
+        # subsolo
+        self.subsolo_sprites.update(self.world_shift)
+        self.subsolo_sprites.draw(self.display_surface)
+
+        # em cima subsolo
+        self.subsolo_emcima_sprites.update(self.world_shift)
+        self.subsolo_emcima_sprites.draw(self.display_surface)
+
         # predios
         self.predios_sprite.update(self.world_shift)
         self.predios_sprite.draw(self.display_surface)
 
+        # predio 4
+        self.predio_4_sprites.update(self.world_shift)
+        self.predio_4_sprites.draw(self.display_surface)
+
+        # predio 4 extra
+        self.extra_predio4_sprites.update(self.world_shift)
+        self.extra_predio4_sprites.draw(self.display_surface)
+
+        # escada
+        self.escada_sprites.update(self.world_shift)
+        self.escada_sprites.draw(self.display_surface)
+
         # casa_1
         self.casa1_sprite.update(self.world_shift)
         self.casa1_sprite.draw(self.display_surface)
+
+        # casa 3
+        self.casa_3_sprites.update(self.world_shift)
+        self.casa_3_sprites.draw(self.display_surface)
+
+        # grades extra
+        self.grades_extra_sprites.update(self.world_shift)
+        self.grades_extra_sprites.draw(self.display_surface)
+
+        # grades em cima
+        self.grades_cima_sprites.update(self.world_shift)
+        self.grades_cima_sprites.draw(self.display_surface)
 
         # arvore_casa1
         self.arvore_sprite.update(self.world_shift)
@@ -504,9 +566,21 @@ class Level:
         self.grades_casa2_sprite.update(self.world_shift)
         self.grades_casa2_sprite.draw(self.display_surface)
 
-        # portas_surfaces
+        # jardim casa 3
+        self.jardim_casa3_sprites.update(self.world_shift)
+        self.jardim_casa3_sprites.draw(self.display_surface)
+
+        # extra casa 3
+        self.extra_casa3_sprites.update(self.world_shift)
+        self.extra_casa3_sprites.draw(self.display_surface)
+
+        # portas janelas
         self.portas_janelas_sprite.update(self.world_shift)
         self.portas_janelas_sprite.draw(self.display_surface)
+
+        # sombras
+        self.sombras_sprites.update(self.world_shift)
+        self.sombras_sprites.draw(self.display_surface)
 
         # tapumes
         self.tapumes_sprite.update(self.world_shift)
@@ -550,53 +624,7 @@ class Level:
         self.player_sprite.draw(self.display_surface)
 
         # water
-        self.water.draw(self.display_surface, self.world_shift)
-
-        # TRANSIÇÃO CENA 2
-        self.transicao_sprite.update(self.world_shift)
-        self.transicao_sprite.draw(self.display_surface)
-
-        # CENA 2
-
-        # parede_preta
-        self.parede_preta_sprite.update(self.world_shift)
-        self.parede_preta_sprite.draw(self.display_surface)
-
-        # predio_rosa
-        self.predio_rosa_sprite.update(self.world_shift)
-        self.predio_rosa_sprite.draw(self.display_surface)
-
-        # predio_azul
-        self.predio_azul_sprite.update(self.world_shift)
-        self.predio_azul_sprite.draw(self.display_surface)
-
-        # chao_cena2
-        self.chao_cena2_sprite.update(self.world_shift)
-        self.chao_cena2_sprite.draw(self.display_surface)
-
-        # predio_verde
-        self.predio_verde_sprite.update(self.world_shift)
-        self.predio_verde_sprite.draw(self.display_surface)
-
-        # predio_marron
-        self.predio_marron_sprite.update(self.world_shift)
-        self.predio_marron_sprite.draw(self.display_surface)
-
-        # predio_vermelho
-        self.predio_vermelho_sprite.update(self.world_shift)
-        self.predio_vermelho_sprite.draw(self.display_surface)
-
-        # vegetacao
-        self.vegetacao_sprite.update(self.world_shift)
-        self.vegetacao_sprite.draw(self.display_surface)
-
-        # portas_janelas_cena2
-        self.portas_janelascena2_sprite.update(self.world_shift)
-        self.portas_janelascena2_sprite.draw(self.display_surface)
-
-        # props_cena2
-        self.props_cena2_sprite.update(self.world_shift)
-        self.props_cena2_sprite.draw(self.display_surface)
+        #self.water.draw(self.display_surface, self.world_shift)
 
         self.check_win()
         self.check_death()
