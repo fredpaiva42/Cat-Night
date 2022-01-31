@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.player_sprite = pygame.sprite.GroupSingle()
+        self.gameClock = pygame.time.Clock()
 
 
         # dust particles
@@ -40,6 +41,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0.8
         self.jump_speed = -18
         self.collision_rect = pygame.Rect(self.rect.topleft, (55, self.rect.height))  # depois preciso padronizar
+        self.attackCd = 0
         # todos os sprites dos gatos com o mesmo tamanho, ai vai ficar perfeito (mudar o 50)
 
         # player status
@@ -138,13 +140,16 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 1
             self.facing_right = True
             self.attack = False
+            self.attackCd += self.gameClock.tick(60) / 1000
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
             self.facing_right = False
             self.attack = False
+            self.attackCd += self.gameClock.tick(60) / 1000
         elif keys[pygame.K_q]:
             self.direction.x = 0.01
             self.attack = True
+            self.attackCd = 0
             if self.current_character == 3 and self.ready:
                 if self.facing_right:
                     self.shoot_fire(self.speed)
@@ -155,6 +160,7 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_w]:
             self.direction.x = 0.009
             self.attack = True
+            self.attackCd = 0
             if self.current_character == 2 and self.ready:
                 if self.facing_right:
                     self.shoot_arrow(self.speed, '../img/character/meowolas/arrow/right/')
@@ -164,6 +170,7 @@ class Player(pygame.sprite.Sprite):
                 self.arrow_time = pygame.time.get_ticks()
         else:
             self.direction.x = 0
+            self.attackCd += self.gameClock.tick(60) / 1000
         if keys[pygame.K_SPACE] and self.on_ground:
             self.attack = False
             self.jump()

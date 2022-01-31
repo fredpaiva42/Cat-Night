@@ -164,9 +164,17 @@ class Level:
         estrelas_layout = import_csv_layout(level_data['estrelas'])
         self.estrelas_sprites = self.create_tile_group(estrelas_layout, 'estrelas')
 
-        # casa 3
-        casa_3_layout = import_csv_layout(level_data['casa_3'])
-        self.casa_3_sprites = self.create_tile_group(casa_3_layout, 'casa_3')
+        # hotel
+        hotel_layout = import_csv_layout(level_data['hotel'])
+        self.hotel_sprites = self.create_tile_group(hotel_layout, 'hotel')
+
+        # predio alto
+        predio_alto_layout = import_csv_layout(level_data['predio_alto'])
+        self.predio_alto_sprites = self.create_tile_group(predio_alto_layout, 'predio_alto')
+
+        # ponte
+        ponte_layout = import_csv_layout(level_data['ponte'])
+        self.ponte_sprites = self.create_tile_group(ponte_layout, 'ponte')
 
         # enemies
         enemy_layout = import_csv_layout(level_data['enemies'])
@@ -342,6 +350,21 @@ class Level:
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
+                    if type == 'hotel':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'predio_alto':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'ponte':
+                        tile_surface = tile_list_all[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
                     if type == 'enemies':
                         sprite = Enemy(tile_size, x, y, '../img/enemies/rat/run', 'run')
                         sprite_group.add(sprite)
@@ -494,9 +517,14 @@ class Level:
         self.nuvens_sprite.update(self.world_shift)
         self.nuvens_sprite.draw(self.display_surface)
 
+        # predios
+        self.predios_sprite.update(self.world_shift)
+        self.predios_sprite.draw(self.display_surface)
+
         # chão
         self.chao_sprite.update(self.world_shift)
         self.chao_sprite.draw(self.display_surface)
+
 
         # subsolo
         self.subsolo_sprites.update(self.world_shift)
@@ -506,9 +534,14 @@ class Level:
         self.subsolo_emcima_sprites.update(self.world_shift)
         self.subsolo_emcima_sprites.draw(self.display_surface)
 
-        # predios
-        self.predios_sprite.update(self.world_shift)
-        self.predios_sprite.draw(self.display_surface)
+
+        # ponte
+        self.ponte_sprites.update(self.world_shift)
+        self.ponte_sprites.draw(self.display_surface)
+
+        # hotel
+        self.hotel_sprites.update(self.world_shift)
+        self.hotel_sprites.draw(self.display_surface)
 
         # predio 4
         self.predio_4_sprites.update(self.world_shift)
@@ -557,6 +590,10 @@ class Level:
         # telhados_fundos
         self.telhados_fundos_sprite.update(self.world_shift)
         self.telhados_fundos_sprite.draw(self.display_surface)
+
+        # predio alto
+        self.predio_alto_sprites.update(self.world_shift)
+        self.predio_alto_sprites.draw(self.display_surface)
 
         # telhados
         self.telhados_sprite.update(self.world_shift)
