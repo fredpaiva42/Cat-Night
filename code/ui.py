@@ -23,7 +23,11 @@ class UI:
 
         # inventory
         self.inventory = pygame.image.load('../ui/inventario.png').convert_alpha()
-        self.inventory_rect = self.inventory.get_rect(center=(725, 60))
+        self.inventory_rect = self.inventory.get_rect(center=(950, 50))
+
+        # pause button
+        self.button_pause = pygame.image.load('../img/buttons/pause.png').convert_alpha()
+        self.button_rect = self.button_pause.get_rect(center=(1240, 50))
 
     def show_health(self, current, full):
         self.display_surface.blit(self.health_bar, (20, 10))
@@ -34,3 +38,6 @@ class UI:
 
     def show_inventory(self):
         self.display_surface.blit(self.inventory, self.inventory_rect)
+
+    def show_pause_button(self):
+        self.display_surface.blit(self.button_pause, self.button_rect)
