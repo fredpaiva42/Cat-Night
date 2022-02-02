@@ -4,6 +4,7 @@ from level import Level
 from game_data import king
 from selection import Selection
 from ui import UI
+from ui import Inventory
 from player import Player
 import settings
 
@@ -26,6 +27,8 @@ class Game:
 
         # user interface
         self.ui = UI(screen, current_character)
+
+        self.inventory = Inventory(screen)
 
     def create_selection(self, current_character, new_max_character):
         if new_max_character > self.max_character:
@@ -57,6 +60,6 @@ class Game:
         else:
             self.level.run()
             self.ui.show_health(self.cur_health, self.max_health)
-            self.ui.show_inventory()
             self.ui.show_pause_button()
+            self.inventory.run(self.level.got_item, self.level.item_id)
             self.check_game_over()

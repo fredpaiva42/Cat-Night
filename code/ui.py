@@ -21,10 +21,6 @@ class UI:
         self.bar_max_width = 150
         self.bar_height = 8
 
-        # inventory
-        self.inventory = pygame.image.load('../ui/inventario.png').convert_alpha()
-        self.inventory_rect = self.inventory.get_rect(center=(950, 50))
-
         # pause button
         self.button_pause = pygame.image.load('../img/buttons/pause.png').convert_alpha()
         self.button_rect = self.button_pause.get_rect(center=(1240, 50))
@@ -36,8 +32,65 @@ class UI:
         health_bar_rect = pygame.Rect(self.health_bar_topleft, (current_bar_width, self.bar_height))
         pygame.draw.rect(self.display_surface, '#FF0044', health_bar_rect)
 
-    def show_inventory(self):
-        self.display_surface.blit(self.inventory, self.inventory_rect)
 
     def show_pause_button(self):
         self.display_surface.blit(self.button_pause, self.button_rect)
+
+
+class Inventory:
+    def __init__(self, surface):
+        self.surface = surface
+        self.slots = []
+
+        self.image = pygame.image.load('../ui/inventario.png').convert_alpha()
+        self.inventory_rect = self.image.get_rect(center=(950, 50))
+
+    def run(self, got_item, id_item):
+        self.surface.blit(self.image, self.inventory_rect)
+        for slot in self.slots:
+            slot.run(self.surface)
+
+        if got_item:
+            print(id_item)
+            self.slots.append(InventorySlot(id_item))
+
+
+class InventorySlot:
+    def __init__(self, id_item):
+        if id_item == 1:
+            self.image = pygame.image.load('../img/items/colher.png').convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (708+(57*id_item), 35)
+
+        elif id_item == 2:
+            self.image = pygame.image.load('../img/items/pergaminho.png').convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (708+(57*id_item), 35)
+
+        elif id_item == 3:
+            self.image = pygame.image.load('../img/items/colar.png').convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (708+(57*id_item), 35)
+
+        elif id_item == 4:
+            self.image = pygame.image.load('../img/items/perfume.png').convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (708+(57*id_item), 35)
+
+        elif id_item == 5:
+            self.image = pygame.image.load('../img/items/capuz.png').convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (708+(57*id_item), 35)
+
+        elif id_item == 6:
+            self.image = pygame.image.load('../img/items/anel.png').convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (708+(57*id_item), 35)
+
+        elif id_item == 7:
+            self.image = pygame.image.load('../img/items/chave.png').convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.topleft = (708+(57*id_item), 35)
+
+    def run(self, surface):
+        surface.blit(self.image, self.rect)

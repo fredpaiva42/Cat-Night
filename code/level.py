@@ -20,6 +20,7 @@ class Level:
         self.change_health = change_health
         self.bar_health_reset = bar_health_reset
         self.cur_health = cur_health
+        self.clock = pygame.time.Clock()
 
         # selection connection
         self.create_selection = create_selection
@@ -32,6 +33,10 @@ class Level:
         self.player_sprite = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout, change_health, bar_health_reset, cur_health)
+
+        self.item_id = 0
+        self.got_item = False
+        self.cdClick = 0
 
         # dust
         self.dust_sprite = pygame.sprite.GroupSingle()
@@ -183,6 +188,10 @@ class Level:
         # constraints
         constraints_layout = import_csv_layout(level_data['constraints'])
         self.constraints_sprites = self.create_tile_group(constraints_layout, 'constraints')
+
+        # items
+        items_layout = import_csv_layout(level_data['items'])
+        self.items_sprites = self.create_tile_group(items_layout, 'items')
 
         # decoration
         level_width = (len(chao_layout[0]) - 77.5) * tile_size
@@ -373,6 +382,10 @@ class Level:
                         sprite = Tile(tile_size, x, y)
                         sprite_group.add(sprite)
 
+                    if type == 'items':
+                        sprite = Tile(tile_size, x, y)
+                        sprite_group.add(sprite)
+
         return sprite_group
 
     def player_setup(self, layout, change_health, bar_health_reset, cur_health):
@@ -438,7 +451,7 @@ class Level:
         if player_x < screen_width / 4 and direction_x < 0:
             self.world_shift = -6
             player.speed = 0
-        elif player_x > screen_width - (screen_width / 4) and direction_x > 0:
+        elif player_x > screen_width - (screen_width / 3) and direction_x > 0:
             self.world_shift = + 6
             player.speed = 0
         else:
@@ -487,6 +500,17 @@ class Level:
                 else:
                      self.player_sprite.sprite.get_damage()
 
+    def check_got_item(self):
+        player = self.player_sprite.sprite
+        keys = pygame.key.get_pressed()
+
+        for item in self.items_sprites:
+            rect = item.rect
+            if rect.colliderect(player):
+                if keys[pygame.K_SPACE] and self.cdClick > 1000:
+                    self.got_item = True
+                    self.item_id += 1
+                    self.cdClick = 0
 
     def collision_check(self):
         if self.player_sprite.sprite.arrows:
@@ -651,6 +675,9 @@ class Level:
         self.dust_sprite.update(self.world_shift)
         self.dust_sprite.draw(self.display_surface)
 
+        # itens
+        self.items_sprites.update(self.world_shift)
+
         # player
         self.player_sprite.update()
         self.player_sprite.sprite.arrows.draw(self.display_surface)
@@ -663,8 +690,11 @@ class Level:
         # water
         #self.water.draw(self.display_surface, self.world_shift)
 
+        self.cdClick += self.clock.tick(60)
+
         self.check_win()
         self.check_death()
 
         self.check_enemy_collisions()
         self.collision_check()
+        self.check_got_item()
