@@ -5,6 +5,7 @@ from game_data import king
 from selection import Selection
 from ui import UI
 from player import Player
+from menu_pause import MenuPause
 import settings
 
 class Game:
@@ -19,6 +20,13 @@ class Game:
         # character selection
         self.selection = Selection(self.start_character, self.max_character, screen, self.create_level)
         self.status = 'selection'
+
+        # initializing button pause, get position
+        self.button_pause = pygame.image.load('../img/buttons/pause.png').convert_alpha()
+        self.button_rect = self.button_pause.get_rect(center=(1240, 50))
+
+        # Menu Pause
+        self.menu_pause = pygame.image.load("../img/background/menu_pause.png").convert()
 
     def create_level(self, current_character):
         self.level = Level(current_character, screen, self.create_selection, self.change_health, self.bar_health_reset, self.cur_health)
@@ -48,9 +56,10 @@ class Game:
             self.status = 'selection'
 
     def run(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE]:
-            settings.GAME_STATE = 0
+        click = pygame.mouse.get_pressed()
+        if self.button_rect.collidepoint(pygame.mouse.get_pos()):
+            if click[0] == 1:
+                settings.GAME_STATE = 2
 
         if self.status == 'selection':
             self.selection.run()
