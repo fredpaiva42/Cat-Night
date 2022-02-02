@@ -6,6 +6,7 @@ from random import randint
 class Enemy(AnimatedTile):
     def __init__(self, size, x, y, path ,type):
         super().__init__(size, x, y, path)
+        self.alive = True
         self.frame_index = 0
         self.animation_speed = 0.5
         if type == 'run':
@@ -23,7 +24,9 @@ class Enemy(AnimatedTile):
         self.speed *= -1
 
     def update(self, shift):
-        self.rect.x -= shift
+        if self.alive:
+            self.rect.x -= shift
         self.animate()
-        self.move()
+        if self.alive:
+            self.move()
         self.reverse_image()

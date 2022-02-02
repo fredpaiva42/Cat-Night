@@ -498,6 +498,7 @@ class Level:
                     death_sprite = ParticleEffect(enemy.rect.center, 'death')
                     self.death_sprite.add(death_sprite)
                     enemy.kill()
+                    enemy.alive = False
                 else:
                      self.player_sprite.sprite.get_damage()
 
