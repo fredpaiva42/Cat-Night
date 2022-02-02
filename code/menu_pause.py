@@ -1,5 +1,7 @@
 import pygame, sys
 import settings
+
+
 class MenuPause:
     def __init__(self, surface):
         self.display_surface = surface
@@ -18,7 +20,6 @@ class MenuPause:
         self.soundNo = pygame.image.load("../img/buttons/soundNo.png").convert_alpha()
         self.soundNo_rect = self.soundNo.get_rect(center=(685, 500))
 
-
     def show_buttons(self):
         self.display_surface.blit(self.button_home, self.button_home_rect)
         self.display_surface.blit(self.button_resume, self.button_resume_rect)
@@ -26,7 +27,7 @@ class MenuPause:
         self.display_surface.blit(self.soundNo, self.soundNo_rect)
 
     def run(self):
-        settings.screen.blit(self.menu_pause, (settings.screen_width /2 - 350, settings.screen_height /2 - 200))
+        settings.screen.blit(self.menu_pause, (settings.screen_width / 2 - 350, settings.screen_height / 2 - 200))
         click = pygame.mouse.get_pressed()
         self.show_buttons()
 
