@@ -491,11 +491,14 @@ class Level:
 
         if enemy_collisions:
             for enemy in enemy_collisions:
-                enemy_center = enemy.rect.centery
-                enemy_top = enemy.rect.top
-                player_bottom = self.player_sprite.sprite.rect.bottom
+                # o pulo não mata mais inimigos, pois já temos um os ataques.
 
-                if (enemy_top < player_bottom < enemy_center and self.player_sprite.sprite.direction.y >= 0) or self.player_sprite.sprite.attack:
+                # enemy_center = enemy.rect.centery
+                # enemy_top = enemy.rect.top
+                # player_bottom = self.player_sprite.sprite.rect.bottom
+                # if (enemy_top < player_bottom < enemy_center and self.player_sprite.sprite.direction.y >= 0) or self.player_sprite.sprite.attack:
+
+                if self.player_sprite.sprite.attack:
                     death_sprite = ParticleEffect(enemy.rect.center, 'death')
                     self.death_sprite.add(death_sprite)
                     enemy.kill()
