@@ -175,7 +175,7 @@ class Player(pygame.sprite.Sprite):
             self.pressedW = False
             self.pressedQ = False
             self.attackCd += self.gameClock.tick(60) / 1000
-        if keys[pygame.K_SPACE] and self.on_ground:
+        if keys[pygame.K_UP] and self.on_ground:
             self.attack = False
             self.jump()
 
