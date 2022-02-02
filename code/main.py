@@ -7,12 +7,14 @@ from ui import UI
 from player import Player
 from game import Game
 from menu import Menu
+from menu_pause import MenuPause
 import settings
 
 # Pygame setup
 pygame.init()
 pygame.display.set_caption('Cat Night')
 menu = Menu(screen)
+menu_pause = MenuPause(screen)
 clock = pygame.time.Clock()
 game = Game()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
@@ -29,6 +31,8 @@ while True:
     if settings.GAME_STATE == 1:
         screen.blit(bg, (0, 0))
         game.run()
+    if settings.GAME_STATE == 2:
+        menu_pause.run()
 
     pygame.display.update()
     clock.tick(60)  # define fps
