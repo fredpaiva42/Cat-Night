@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.player_sprite = pygame.sprite.GroupSingle()
+
         self.gameClock = pygame.time.Clock()
 
 
@@ -171,7 +172,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
             self.attackCd += self.gameClock.tick(60) / 1000
-        if keys[pygame.K_SPACE] and self.on_ground:
+        if keys[pygame.K_UP] and self.on_ground:
             self.attack = False
             self.jump()
 

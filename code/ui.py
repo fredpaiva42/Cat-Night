@@ -51,7 +51,6 @@ class Inventory:
             slot.run(self.surface)
 
         if got_item:
-            print(id_item)
             self.slots.append(InventorySlot(id_item))
 
 

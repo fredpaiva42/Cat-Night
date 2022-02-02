@@ -34,6 +34,7 @@ class Level:
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout, change_health, bar_health_reset, cur_health)
 
+        # item
         self.item_id = 0
         self.got_item = False
         self.cdClick = 0
@@ -511,6 +512,7 @@ class Level:
                     self.got_item = True
                     self.item_id += 1
                     self.cdClick = 0
+                    self.items_sprites.remove(item)
 
     def collision_check(self):
         if self.player_sprite.sprite.arrows:
