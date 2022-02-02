@@ -62,8 +62,7 @@ class Game:
     def check_game_over(self):
         if self.cur_health <= 0:
             self.cur_health = 100
-            self.selection = Selection(0, self.max_character, screen, self.create_level)
-            self.status = 'selection'
+            settings.GAME_STATE = 4
 
     def run(self):
         click = pygame.mouse.get_pressed()

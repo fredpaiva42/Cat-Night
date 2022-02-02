@@ -40,6 +40,8 @@ king = {
     'node_pos': (160, 400),
     'unlock': 1,
     'node_graphics': "../img/selection/0",
+    'death_pos': (650, 336),
+    'death_graphics': "../img/death/0/",
 }
 knight = {
     'arbustos_casa1': "../niveis/level_0/level_0_arbustos_casa1.csv",
@@ -83,6 +85,8 @@ knight = {
     'node_pos': (485, 400),
     'unlock': 2,
     'node_graphics': "../img/selection/1",
+    'death_pos': (650, 336),
+    'death_graphics': "../img/death/1/",
 }
 meowolas = {
     'arbustos_casa1': "../niveis/level_0/level_0_arbustos_casa1.csv",
@@ -126,6 +130,8 @@ meowolas = {
     'node_pos': (810, 400),
     'unlock': 3,
     'node_graphics': "../img/selection/2",
+    'death_pos': (650, 336),
+    'death_graphics': "../img/death/2/",
 }
 mage = {
     'arbustos_casa1': "../niveis/level_0/level_0_arbustos_casa1.csv",
@@ -169,6 +175,8 @@ mage = {
     'node_pos': (1135, 400),
     'unlock': 4,
     'node_graphics': "../img/selection/3",
+    'death_pos': (650, 336),
+    'death_graphics': "../img/death/3/",
 }
 
 
