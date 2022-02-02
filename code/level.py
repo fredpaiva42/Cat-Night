@@ -46,6 +46,7 @@ class Level:
         # rat death
         self.death_sprite = pygame.sprite.Group()
         self.cat_death_sprite = pygame.sprite.Group()
+        self.alive = True
 
         # CENA 1
 
@@ -498,7 +499,7 @@ class Level:
                     death_sprite = ParticleEffect(enemy.rect.center, 'death')
                     self.death_sprite.add(death_sprite)
                     enemy.kill()
-                    enemy.alive = False
+                    self.alive = False
                 else:
                      self.player_sprite.sprite.get_damage()
 
@@ -671,8 +672,9 @@ class Level:
         self.constraints_sprites.update(self.world_shift)
         self.enemy_collision_reverse()
         self.enemy_sprites.draw(self.display_surface)
-        self.death_sprite.update(self.world_shift)
-        self.death_sprite.draw(self.display_surface)
+        if self.alive:
+            self.death_sprite.update(self.world_shift)
+            self.death_sprite.draw(self.display_surface)
 
         # dust particles
         self.dust_sprite.update(self.world_shift)

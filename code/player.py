@@ -15,7 +15,6 @@ class Player(pygame.sprite.Sprite):
         self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
         self.player_sprite = pygame.sprite.GroupSingle()
-
         self.gameClock = pygame.time.Clock()
 
 
@@ -43,6 +42,8 @@ class Player(pygame.sprite.Sprite):
         self.jump_speed = -18
         self.collision_rect = pygame.Rect(self.rect.topleft, (55, self.rect.height))  # depois preciso padronizar
         self.attackCd = 0
+        self.pressedQ = False
+        self.pressedW = False
         # todos os sprites dos gatos com o mesmo tamanho, ai vai ficar perfeito (mudar o 50)
 
         # player status
@@ -148,7 +149,7 @@ class Player(pygame.sprite.Sprite):
             self.attack = False
             self.attackCd += self.gameClock.tick(60) / 1000
         elif keys[pygame.K_q]:
-            self.direction.x = 0.01
+            self.pressedQ = True
             self.attack = True
             self.attackCd = 0
             if self.current_character == 3 and self.ready:
@@ -159,7 +160,7 @@ class Player(pygame.sprite.Sprite):
                 self.ready = False
                 self.arrow_time = pygame.time.get_ticks()
         elif keys[pygame.K_w]:
-            self.direction.x = 0.009
+            self.pressedW = True
             self.attack = True
             self.attackCd = 0
             if self.current_character == 2 and self.ready:
@@ -171,8 +172,10 @@ class Player(pygame.sprite.Sprite):
                 self.arrow_time = pygame.time.get_ticks()
         else:
             self.direction.x = 0
+            self.pressedW = False
+            self.pressedQ = False
             self.attackCd += self.gameClock.tick(60) / 1000
-        if keys[pygame.K_UP] and self.on_ground:
+        if keys[pygame.K_SPACE] and self.on_ground:
             self.attack = False
             self.jump()
 
@@ -186,9 +189,9 @@ class Player(pygame.sprite.Sprite):
         else:
             if self.direction.x == 1 or self.direction.x == -1:
                 self.status = 'run'
-            elif self.direction.x == 0.01:
+            elif self.pressedQ:
                 self.status = 'attack'
-            elif self.direction.x == 0.009:
+            elif self.pressedW:
                 self.status = 'attack2'
             else:
                 self.status = 'idle'
