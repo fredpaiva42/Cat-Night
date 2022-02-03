@@ -18,9 +18,9 @@ pygame.display.set_caption('Cat Night')
 menu = Menu(screen)
 menu_pause = MenuPause(screen)
 bt_help = Help(screen)
-defeat = Defeat(0, 3, screen)
-clock = pygame.time.Clock()
 game = Game()
+defeat = Defeat(game.selection.current_character, 3, screen)
+clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
 
 while True:

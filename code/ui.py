@@ -65,32 +65,32 @@ class InventorySlot:
         if id_item == 1:
             self.image = pygame.image.load('../img/items/colher.png').convert_alpha()
             self.rect = self.image.get_rect()
-            self.rect.topleft = (708 + (57 * id_item), 35)
+            self.rect.topleft = (658 + (57 * id_item), 35)
 
         elif id_item == 2:
             self.image = pygame.image.load('../img/items/pergaminho.png').convert_alpha()
             self.rect = self.image.get_rect()
-            self.rect.topleft = (708 + (57 * id_item), 35)
+            self.rect.topleft = (658 + (57 * id_item), 35)
 
         elif id_item == 3:
             self.image = pygame.image.load('../img/items/colar.png').convert_alpha()
             self.rect = self.image.get_rect()
-            self.rect.topleft = (708 + (57 * id_item), 35)
+            self.rect.topleft = (658 + (57 * id_item), 35)
 
         elif id_item == 4:
             self.image = pygame.image.load('../img/items/perfume.png').convert_alpha()
             self.rect = self.image.get_rect()
-            self.rect.topleft = (708 + (57 * id_item), 35)
+            self.rect.topleft = (658 + (57 * id_item), 35)
 
         elif id_item == 5:
             self.image = pygame.image.load('../img/items/capuz.png').convert_alpha()
             self.rect = self.image.get_rect()
-            self.rect.topleft = (708 + (57 * id_item), 35)
+            self.rect.topleft = (658 + (57 * id_item), 35)
 
         elif id_item == 6:
             self.image = pygame.image.load('../img/items/anel.png').convert_alpha()
             self.rect = self.image.get_rect()
-            self.rect.topleft = (708 + (57 * id_item), 35)
+            self.rect.topleft = (658 + (57 * id_item), 35)
 
         elif id_item == 7:
             self.image = pygame.image.load('../img/items/chave.png').convert_alpha()

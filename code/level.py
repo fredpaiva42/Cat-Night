@@ -191,9 +191,34 @@ class Level:
         constraints_layout = import_csv_layout(level_data['constraints'])
         self.constraints_sprites = self.create_tile_group(constraints_layout, 'constraints')
 
-        # items
-        items_layout = import_csv_layout(level_data['items'])
-        self.items_sprites = self.create_tile_group(items_layout, 'items')
+        # ITENS
+        # colher
+        colher_layout = import_csv_layout(level_data['colher'])
+        self.colher_sprites = self.create_tile_group(colher_layout, 'colher')
+
+        # pergaminho
+        pergaminho_layout = import_csv_layout(level_data['pergaminho'])
+        self.pergaminho_sprites = self.create_tile_group(pergaminho_layout, 'pergaminho')
+
+        # colar
+        colar_layout = import_csv_layout(level_data['colar'])
+        self.colar_sprites = self.create_tile_group(colar_layout, 'colar')
+
+        # perfume
+        perfume_layout = import_csv_layout(level_data['perfume'])
+        self.perfume_sprites = self.create_tile_group(perfume_layout, 'perfume')
+
+        # capuz
+        capuz_layout = import_csv_layout(level_data['capuz'])
+        self.capuz_sprites = self.create_tile_group(capuz_layout, 'capuz')
+
+        # anel
+        anel_layout = import_csv_layout(level_data['anel'])
+        self.anel_sprites = self.create_tile_group(anel_layout, 'anel')
+
+        # chave
+        #chave_layout = import_csv_layout(level_data['chave'])
+        #self.chave_sprites = self.create_tile_group(chave_layout, 'chave')
 
         # decoration
         level_width = (len(chao_layout[0]) - 77.5) * tile_size
@@ -204,6 +229,7 @@ class Level:
         sprite_group = pygame.sprite.Group()
         tile_list_all = import_cut_graphics('../img/background/mp_cs_tilemap_all 1.png')
         tile_list_vegetation = import_cut_graphics('../img/background/mp_cs_vegetation 1.png')
+        tile_list_items = import_cut_graphics('../img/background/items_tiles.png')
 
         for row_index, row in enumerate(layout):
             for col_index, val in enumerate(row):
@@ -384,8 +410,39 @@ class Level:
                         sprite = Tile(tile_size, x, y)
                         sprite_group.add(sprite)
 
-                    if type == 'items':
-                        sprite = Tile(tile_size, x, y)
+                    if type == 'colher':
+                        tile_surface = tile_list_items[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'pergaminho':
+                        tile_surface = tile_list_items[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'colar':
+                        tile_surface = tile_list_items[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'perfume':
+                        tile_surface = tile_list_items[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'capuz':
+                        tile_surface = tile_list_items[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'anel':
+                        tile_surface = tile_list_items[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'chave':
+                        tile_surface = tile_list_items[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
         return sprite_group
@@ -510,14 +567,25 @@ class Level:
         player = self.player_sprite.sprite
         keys = pygame.key.get_pressed()
 
-        for item in self.items_sprites:
-            rect = item.rect
-            if rect.colliderect(player):
-                if keys[pygame.K_SPACE] and self.cdClick > 1000:
-                    self.got_item = True
-                    self.item_id += 1
-                    self.cdClick = 0
-                    self.items_sprites.remove(item)
+        items_dict = {
+            self.colher_sprites: 1,
+            self.pergaminho_sprites: 2,
+            self.colar_sprites: 3,
+            self.perfume_sprites: 4,
+            self.capuz_sprites: 5,
+            self.anel_sprites: 6,
+            #self.chave_sprites: 7,
+        }
+
+        for sprites, idItem in items_dict.items():
+            for item in sprites:
+                rect = item.rect
+                if rect.colliderect(player):
+                    if keys[pygame.K_SPACE] and self.cdClick > 1000:
+                        self.got_item = True
+                        self.item_id = idItem
+                        self.cdClick = 0
+                        sprites.remove(item)
 
     def collision_check(self):
         if self.player_sprite.sprite.arrows:
@@ -598,6 +666,10 @@ class Level:
         self.grades_extra_sprites.update(self.world_shift)
         self.grades_extra_sprites.draw(self.display_surface)
 
+        # perfume
+        self.perfume_sprites.update(self.world_shift)
+        self.perfume_sprites.draw(self.display_surface)
+
         # grades em cima
         self.grades_cima_sprites.update(self.world_shift)
         self.grades_cima_sprites.draw(self.display_surface)
@@ -642,6 +714,14 @@ class Level:
         self.extra_casa3_sprites.update(self.world_shift)
         self.extra_casa3_sprites.draw(self.display_surface)
 
+        # capuz
+        self.capuz_sprites.update(self.world_shift)
+        self.capuz_sprites.draw(self.display_surface)
+
+        # anel
+        self.anel_sprites.update(self.world_shift)
+        self.anel_sprites.draw(self.display_surface)
+
         # portas janelas
         self.portas_janelas_sprite.update(self.world_shift)
         self.portas_janelas_sprite.draw(self.display_surface)
@@ -649,6 +729,14 @@ class Level:
         # sombras
         self.sombras_sprites.update(self.world_shift)
         self.sombras_sprites.draw(self.display_surface)
+
+        # pergaminho
+        self.pergaminho_sprites.update(self.world_shift)
+        self.pergaminho_sprites.draw(self.display_surface)
+
+        # colar
+        self.colar_sprites.update(self.world_shift)
+        self.colar_sprites.draw(self.display_surface)
 
         # tapumes
         self.tapumes_sprite.update(self.world_shift)
@@ -666,9 +754,17 @@ class Level:
         self.cercas_sprite.update(self.world_shift)
         self.cercas_sprite.draw(self.display_surface)
 
+        # colher
+        self.colher_sprites.update(self.world_shift)
+        self.colher_sprites.draw(self.display_surface)
+
         # jardim_casa1
         self.jardim_casa1_sprite.update(self.world_shift)
         self.jardim_casa1_sprite.draw(self.display_surface)
+
+        # chave
+        #self.chave_sprites.update(self.world_shift)
+        #self.chave_sprites.draw(self.display_surface)
 
         # enemies
         self.enemy_sprites.update(self.world_shift)
@@ -682,9 +778,6 @@ class Level:
         # dust particles
         self.dust_sprite.update(self.world_shift)
         self.dust_sprite.draw(self.display_surface)
-
-        # itens
-        self.items_sprites.update(self.world_shift)
 
         # player
         self.player_sprite.update()
