@@ -20,7 +20,6 @@ menu = Menu(screen)
 menu_pause = MenuPause(screen)
 bt_help = Help(screen)
 game = Game()
-defeat = Defeat(game.selection.current_character, 3, screen)
 musicManager = MusicManager()
 clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
@@ -44,7 +43,7 @@ while True:
     if settings.GAME_STATE == 3:
         bt_help.run()
     if settings.GAME_STATE == 4:
-        defeat.run()
+        game.defeat.run()
 
     pygame.display.update()
     clock.tick(60)  # define fps

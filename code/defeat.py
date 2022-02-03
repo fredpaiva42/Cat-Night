@@ -4,7 +4,6 @@ from game_data import characters
 from support import import_folder
 from ui import UI
 
-
 class Cat(pygame.sprite.Sprite):
     def __init__(self, pos, path):
         super().__init__()
@@ -23,13 +22,12 @@ class Cat(pygame.sprite.Sprite):
         self.animate()
 
 
-class Defeat:
-    def __init__(self, start_character, max_character, surface):
+class Defeat():
+    def __init__(self,current_character, max_character, surface):
         self.display_surface = surface
         self.display_surface = surface
         self.max_character = max_character
-        self.current_character = start_character
-
+        self.current_character = current_character
         # sprites
         self.setup_cat()
 
@@ -45,8 +43,17 @@ class Defeat:
     def setup_cat(self):
         self.cat = pygame.sprite.Group()
 
-        for index, node_data in enumerate(characters.values()):
-            node_sprite = Cat(node_data['death_pos'], node_data['death_graphics'])
+        if self.current_character == 0:
+            node_sprite = Cat((650, 336), "../img/death/0/")
+            self.cat.add(node_sprite)
+        if self.current_character == 1:
+            node_sprite = Cat((650, 336), "../img/death/1/")
+            self.cat.add(node_sprite)
+        if self.current_character == 2:
+            node_sprite = Cat((650, 336), "../img/death/2/")
+            self.cat.add(node_sprite)
+        if self.current_character == 3:
+            node_sprite = Cat((650, 336), "../img/death/3/")
             self.cat.add(node_sprite)
 
     def run(self):

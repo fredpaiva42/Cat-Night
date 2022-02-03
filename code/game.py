@@ -10,7 +10,6 @@ from menu_pause import MenuPause
 from help import Help
 import settings
 from defeat import Defeat
-from  defeat import Death
 
 
 class Game:
@@ -45,7 +44,7 @@ class Game:
         # user interface
         self.ui = UI(screen, current_character)
 
-        self.death = Death(current_character)
+        self.defeat = Defeat(current_character, 3, screen)
 
         self.inventory = Inventory(screen)
 
