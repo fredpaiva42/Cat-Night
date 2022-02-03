@@ -17,11 +17,11 @@ from credits import Credits
 # Pygame setup
 pygame.init()
 pygame.display.set_caption('Cat Night')
+musicManager = MusicManager()
 menu = Menu(screen)
 menu_pause = MenuPause(screen)
 bt_help = Help(screen)
-game = Game()
-musicManager = MusicManager()
+game = Game(musicManager)
 clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
 credits = Credits(screen)
@@ -41,7 +41,7 @@ while True:
         screen.blit(bg, (0, 0))
         game.run()
     if settings.GAME_STATE == 2:
-        menu_pause.run()
+        menu_pause.run(musicManager)
     if settings.GAME_STATE == 3:
         bt_help.run()
     if settings.GAME_STATE == 4:

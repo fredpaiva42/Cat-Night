@@ -12,7 +12,7 @@ from ui import UI
 
 
 class Level:
-    def __init__(self, current_character, surface, create_selection, change_health, bar_health_reset, cur_health):
+    def __init__(self, current_character, surface, musicManager, create_selection, change_health, bar_health_reset, cur_health):
         # configuração geral
         self.display_surface = surface
         self.world_shift = 0
@@ -22,6 +22,7 @@ class Level:
         self.bar_health_reset = bar_health_reset
         self.cur_health = cur_health
         self.clock = pygame.time.Clock()
+        self.musicManager = musicManager
 
         # selection connection
         self.create_selection = create_selection
@@ -537,6 +538,7 @@ class Level:
                 if not self.is_final_fight:
                     if sprite in self.chao_floresta_sprites.sprites():
                         self.is_final_fight = True
+                        self.musicManager.loadMusic("boss_fight", 0.1)
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
@@ -634,6 +636,7 @@ class Level:
                 rect = item.rect
                 if rect.colliderect(player):
                     if keys[pygame.K_SPACE]:
+                        self.musicManager.loadSound("item_collect", 0.2)
                         self.got_item = True
                         self.item_id = idItem
                         sprites.remove(item)

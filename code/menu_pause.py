@@ -26,7 +26,7 @@ class MenuPause:
         self.display_surface.blit(self.soundYes, self.soundYes_rect)
         self.display_surface.blit(self.soundNo, self.soundNo_rect)
 
-    def run(self):
+    def run(self, musicManager):
         settings.screen.blit(self.menu_pause, (settings.screen_width / 2 - 350, settings.screen_height / 2 - 200))
         click = pygame.mouse.get_pressed()
         self.show_buttons()
@@ -34,7 +34,19 @@ class MenuPause:
         if self.button_home_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
                 settings.GAME_STATE = 0
+                musicManager.loadMusic("menu", 0.1)
 
         if self.button_resume_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
                 settings.GAME_STATE = 1
+
+        if settings.SOUND == 1:
+            if self.soundNo_rect.collidepoint(pygame.mouse.get_pos()):
+                if click[0] == 1:
+                    musicManager.pause()
+                    settings.SOUND = 0
+        else:
+            if self.soundYes_rect.collidepoint(pygame.mouse.get_pos()):
+                if click[0] == 1:
+                    musicManager.play()
+                    settings.SOUND = 1

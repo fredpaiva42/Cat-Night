@@ -13,13 +13,15 @@ from defeat import Defeat
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, musicManager):
         # game atributes
         self.max_character = 3
         self.max_health = 100
         self.cur_health = 100
         self.count_damage = 0
         self.start_character = 0
+
+        self.musicManager = musicManager
 
         # character selection
         self.selection = Selection(self.start_character, self.max_character, screen, self.create_level)
@@ -37,7 +39,8 @@ class Game:
         self.menu_pause = pygame.image.load("../img/background/menu_pause.png").convert()
 
     def create_level(self, current_character):
-        self.level = Level(current_character, screen, self.create_selection, self.change_health, self.bar_health_reset,
+        self.musicManager.loadMusic("background", 0.1)
+        self.level = Level(current_character, screen, self.musicManager, self.create_selection, self.change_health, self.bar_health_reset,
                            self.cur_health)
         self.status = 'level'
 

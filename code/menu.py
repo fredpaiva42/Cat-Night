@@ -6,7 +6,6 @@ import settings
 class Menu:
     def __init__(self, surface):
         self.display_surface = surface
-        self.game = Game()
 
         self.bg = pygame.image.load("../img/background/img_menu.png").convert()
 
@@ -19,6 +18,8 @@ class Menu:
         self.button_credits_rect = self.button_credits.get_rect(center=(1063, 435))
         self.button_exit = pygame.image.load("../img/buttons/exit.png").convert_alpha()
         self.button_exit_rect = self.button_exit.get_rect(center=(1063, 530))
+
+
 
     def show_buttons(self):
         self.display_surface.blit(self.button_play, self.button_play_rect)
