@@ -34,6 +34,10 @@ class Menu:
             if click[0] == 1:
                 settings.GAME_STATE = 1
 
+        if self.button_credits_rect.collidepoint(pygame.mouse.get_pos()):
+            if click[0] == 1:
+                settings.GAME_STATE = 5
+
         if self.button_exit_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
                 pygame.quit()

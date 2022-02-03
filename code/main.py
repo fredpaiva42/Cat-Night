@@ -12,6 +12,7 @@ from help import Help
 from defeat import Defeat
 from musicManager import MusicManager
 import settings
+from credits import Credits
 
 # Pygame setup
 pygame.init()
@@ -23,6 +24,7 @@ game = Game()
 musicManager = MusicManager()
 clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
+credits = Credits(screen)
 
 musicManager.loadMusic("menu", 0.1)
 
@@ -44,6 +46,8 @@ while True:
         bt_help.run()
     if settings.GAME_STATE == 4:
         game.defeat.run()
+    if settings.GAME_STATE == 5:
+        credits.run()
 
     pygame.display.update()
     clock.tick(60)  # define fps
