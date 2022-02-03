@@ -238,6 +238,15 @@ class Level:
         chave_layout = import_csv_layout(level_data['chave'])
         self.chave_sprites = self.create_tile_group(chave_layout, 'chave')
 
+        self.items_dict = {
+            self.colher_sprites: 1,
+            self.pergaminho_sprites: 2,
+            self.colar_sprites: 3,
+            self.perfume_sprites: 4,
+            self.capuz_sprites: 5,
+            self.anel_sprites: 6,
+        }
+
         # decoration
         level_width = (len(chao_layout[0]) - 77.5) * tile_size
         self.water = Water(screen_height - 35, level_width)
@@ -616,22 +625,15 @@ class Level:
                 self.boss_death_sprite.add(death_sprite)
                 boss.kill()
                 self.boss_death = True
+                # adiciona a chave ao dict para poder colectar
+                self.items_dict[self.chave_sprites] = 7
+                self.musicManager.loadMusic("victory", 0.1)
 
     def check_got_item(self):
         player = self.player_sprite.sprite
         keys = pygame.key.get_pressed()
 
-        items_dict = {
-            self.colher_sprites: 1,
-            self.pergaminho_sprites: 2,
-            self.colar_sprites: 3,
-            self.perfume_sprites: 4,
-            self.capuz_sprites: 5,
-            self.anel_sprites: 6,
-            #self.chave_sprites: 7,
-        }
-
-        for sprites, idItem in items_dict.items():
+        for sprites, idItem in self.items_dict.items():
             for item in sprites:
                 rect = item.rect
                 if rect.colliderect(player):
@@ -829,7 +831,9 @@ class Level:
 
         # chave
         self.chave_sprites.update(self.world_shift)
-        self.chave_sprites.draw(self.display_surface)
+        # caso o boss tenha morrido, mostra a chave
+        if self.boss_death:
+            self.chave_sprites.draw(self.display_surface)
 
         # enemies
         self.enemy_sprites.update(self.world_shift)

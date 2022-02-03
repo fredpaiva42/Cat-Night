@@ -1,4 +1,5 @@
 import pygame
+import settings
 
 
 class UI:
@@ -57,11 +58,11 @@ class Inventory:
             slot.run(self.surface)
 
         if got_item:
-            self.slots.append(InventorySlot(id_item))
+            self.slots.append(InventorySlot(id_item, self.slots))
 
 
 class InventorySlot:
-    def __init__(self, id_item):
+    def __init__(self, id_item, slots_list):
         if id_item == 1:
             self.image = pygame.image.load('../img/items/colher.png').convert_alpha()
             self.rect = self.image.get_rect()
@@ -95,7 +96,10 @@ class InventorySlot:
         elif id_item == 7:
             self.image = pygame.image.load('../img/items/chave.png').convert_alpha()
             self.rect = self.image.get_rect()
-            self.rect.topleft = (708 + (57 * id_item), 35)
+            self.rect.topleft = (658 + (57 * id_item), 35)
+            # ganha o jogo
+            settings.GAME_STATE = 6
+
 
     def run(self, surface):
         surface.blit(self.image, self.rect)
