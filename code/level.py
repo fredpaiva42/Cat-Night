@@ -5,6 +5,7 @@ from tiles import Tile, StaticTile
 from player import Player
 from decoration import Water
 from enemy import Enemy
+from enemy import Boss
 from game_data import characters
 from particles import ParticleEffect
 from ui import UI
@@ -37,16 +38,19 @@ class Level:
         # item
         self.item_id = 0
         self.got_item = False
-        self.cdClick = 0
 
         # dust
         self.dust_sprite = pygame.sprite.GroupSingle()
         self.player_on_ground = False
 
         # rat death
-        self.death_sprite = pygame.sprite.Group()
+        self.rat_death_sprite = pygame.sprite.Group()
         self.cat_death_sprite = pygame.sprite.Group()
         self.alive = True
+
+        # boss death
+        self.boss_death_sprite = pygame.sprite.Group()
+        self.boss_death = False
 
         # CENA 1
 
@@ -194,6 +198,11 @@ class Level:
         # enemies
         enemy_layout = import_csv_layout(level_data['enemies'])
         self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
+
+        # boss
+        boss_layout = import_csv_layout(level_data['boss'])
+        self.boss_sprites = self.create_tile_group(boss_layout, 'boss')
+        self.is_final_fight = False
 
         # constraints
         constraints_layout = import_csv_layout(level_data['constraints'])
@@ -424,6 +433,10 @@ class Level:
                         sprite = Enemy(tile_size, x, y, '../img/enemies/rat/run', 'run')
                         sprite_group.add(sprite)
 
+                    if type == 'boss':
+                        sprite = Boss(tile_size, x, y, '../img/enemies/dog/run', 'run')
+                        sprite_group.add(sprite)
+
                     if type == 'constraints':
                         sprite = Tile(tile_size, x, y)
                         sprite_group.add(sprite)
@@ -475,10 +488,15 @@ class Level:
                                     change_health, bar_health_reset, cur_health)
                     self.player_sprite.add(sprite)
 
-    def enemy_collision_reverse(self):
+    def rat_collision_reverse(self):
         for enemy in self.enemy_sprites.sprites():
             if pygame.sprite.spritecollide(enemy, self.constraints_sprites, False):
                 enemy.reverse()
+
+    def boss_collision_reverse(self):
+        for boss in self.boss_sprites.sprites():
+            if pygame.sprite.spritecollide(boss, self.constraints_sprites, False):
+                boss.reverse()
 
     def create_jump_particles(self, pos):
         if self.player.sprite.facing_right:
@@ -516,6 +534,9 @@ class Level:
                     player.collision_rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
+                if not self.is_final_fight:
+                    if sprite in self.chao_floresta_sprites.sprites():
+                        self.is_final_fight = True
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
@@ -574,12 +595,31 @@ class Level:
                 # if (enemy_top < player_bottom < enemy_center and self.player_sprite.sprite.direction.y >= 0) or self.player_sprite.sprite.attack:
 
                 if self.player_sprite.sprite.attack:
-                    death_sprite = ParticleEffect(enemy.rect.center, 'death')
-                    self.death_sprite.add(death_sprite)
+                    death_sprite = ParticleEffect(enemy.rect.center, 'rat_death')
+                    self.rat_death_sprite.add(death_sprite)
                     enemy.kill()
                     self.alive = False
                 else:
-                     self.player_sprite.sprite.get_damage()
+                     self.player_sprite.sprite.get_damage(-10)
+
+    def check_boss_collisions(self):
+        boss_collisions = pygame.sprite.spritecollide(self.player_sprite.sprite, self.boss_sprites, False)
+
+        if boss_collisions:
+            for boss in boss_collisions:
+                if self.player_sprite.sprite.attack:
+                    boss.hp -= 5
+                    print(boss.hp)
+                else:
+                    self.player_sprite.sprite.get_damage(-20)
+
+    def check_boss_death(self):
+        for boss in self.boss_sprites:
+            if boss.hp <= 0:
+                death_sprite = ParticleEffect(boss.rect.center, 'boss_death')
+                self.boss_death_sprite.add(death_sprite)
+                boss.kill()
+                self.boss_death = True
 
     def check_got_item(self):
         player = self.player_sprite.sprite
@@ -599,18 +639,17 @@ class Level:
             for item in sprites:
                 rect = item.rect
                 if rect.colliderect(player):
-                    if keys[pygame.K_SPACE] and self.cdClick > 1000:
+                    if keys[pygame.K_SPACE]:
                         self.got_item = True
                         self.item_id = idItem
-                        self.cdClick = 0
                         sprites.remove(item)
 
     def collision_check(self):
         if self.player_sprite.sprite.arrows:
             for arrow in self.player_sprite.sprite.arrows:
                 if pygame.sprite.spritecollide(arrow, self.enemy_sprites, True):
-                    death_sprite = ParticleEffect(arrow.rect.center, 'death')
-                    self.death_sprite.add(death_sprite)
+                    death_sprite = ParticleEffect(arrow.rect.center, 'rat_death')
+                    self.rat_death_sprite.add(death_sprite)
                     arrow.kill()
 
     def run(self):
@@ -622,6 +661,7 @@ class Level:
 
         # water
         self.water.draw(self.display_surface, self.world_shift)
+
 
         # CENA 1
 
@@ -797,11 +837,22 @@ class Level:
         # enemies
         self.enemy_sprites.update(self.world_shift)
         self.constraints_sprites.update(self.world_shift)
-        self.enemy_collision_reverse()
+        self.rat_collision_reverse()
         self.enemy_sprites.draw(self.display_surface)
         if self.alive:
-            self.death_sprite.update(self.world_shift)
-            self.death_sprite.draw(self.display_surface)
+            self.rat_death_sprite.update(self.world_shift)
+            self.rat_death_sprite.draw(self.display_surface)
+
+        # boss
+        # boss health bar
+        if self.is_final_fight:
+            for boss in self.boss_sprites.sprites():
+                boss.show_boss_health(self.display_surface)
+        self.boss_sprites.update(self.world_shift)
+        self.boss_collision_reverse()
+        self.boss_sprites.draw(self.display_surface)
+        self.boss_death_sprite.update(self.world_shift)
+        self.boss_death_sprite.draw(self.display_surface)
 
         # dust particles
         self.dust_sprite.update(self.world_shift)
@@ -817,11 +868,11 @@ class Level:
         self.player_sprite.draw(self.display_surface)
 
 
-        self.cdClick += self.clock.tick(60)
-
         self.check_win()
         self.check_death()
 
         self.check_enemy_collisions()
+        self.check_boss_collisions()
+        self.check_boss_death()
         self.collision_check()
         self.check_got_item()

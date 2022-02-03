@@ -30,3 +30,19 @@ class Enemy(AnimatedTile):
         if self.alive:
             self.move()
         self.reverse_image()
+
+class Boss(Enemy):
+    def __init__(self, size, x, y, path ,type):
+        super().__init__(size, x, y, path, type)
+        self.total_hp = 150
+        self.hp = 150
+        self.speed = 2
+
+        # health bar
+        self.bar_max_width = 300
+        self.bar_height = 8
+
+    def show_boss_health(self, display_surface):
+        current_health_ratio = self.hp / self.total_hp
+        current_bar_width = self.bar_max_width * current_health_ratio
+        pygame.draw.rect(display_surface, '#FF0044', (550,120,int(current_bar_width),20))

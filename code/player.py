@@ -203,9 +203,9 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         self.direction.y = self.jump_speed
 
-    def get_damage(self):
+    def get_damage(self, damage):
         if not self.invincible:
-            self.change_health(-10)
+            self.change_health(damage)
             self.invincible = True
             self.attack = False
             self.hurt_time = pygame.time.get_ticks()
