@@ -1,5 +1,6 @@
 import pygame
 import settings
+from victory import Victory
 
 
 class UI:
@@ -52,17 +53,20 @@ class Inventory:
         self.image = pygame.image.load('../ui/inventario.png').convert_alpha()
         self.inventory_rect = self.image.get_rect(center=(900, 50))
 
+    def collected_all(self):
+        return (len(self.slots)) >= 6
+
     def run(self, got_item, id_item):
         self.surface.blit(self.image, self.inventory_rect)
         for slot in self.slots:
             slot.run(self.surface)
 
         if got_item:
-            self.slots.append(InventorySlot(id_item, self.slots))
+            self.slots.append(InventorySlot(id_item))
 
 
 class InventorySlot:
-    def __init__(self, id_item, slots_list):
+    def __init__(self, id_item):
         if id_item == 1:
             self.image = pygame.image.load('../img/items/colher.png').convert_alpha()
             self.rect = self.image.get_rect()

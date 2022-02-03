@@ -28,7 +28,6 @@ clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
 credits = Credits(screen)
 chest = Chest(screen)
-victory = Victory(screen)
 
 musicManager.loadMusic("menu", 0.1)
 
@@ -53,8 +52,10 @@ while True:
     if settings.GAME_STATE == 5:
         credits.run()
     if settings.GAME_STATE == 6:
-        chest.run()
-    if settings.GAME_STATE == 7:
+        chest.run(game.inventory.collected_all())
+    if settings.GAME_STATE == 7 or settings.GAME_STATE == 8:
+        print(settings.GAME_STATE)
+        victory = Victory(screen)
         victory.run()
 
 

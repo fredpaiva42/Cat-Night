@@ -2,7 +2,6 @@ import pygame, sys
 import settings
 from game_data import characters
 from support import import_folder
-from ui import UI
 
 class Gammer(pygame.sprite.Sprite):
     def __init__(self, pos, path):
@@ -25,7 +24,6 @@ class Gammer(pygame.sprite.Sprite):
 class Victory:
     def __init__(self, surface):
         self.display_surface = surface
-        self.win = False
         # sprites
         self.setup_gammer()
 
@@ -40,7 +38,7 @@ class Victory:
 
     def setup_gammer(self):
         self.gammer = pygame.sprite.Group()
-        if self.win:
+        if settings.GAME_STATE == 7:
             node_sprite = Gammer((650, 336), "../img/gammer/happy/")
             self.gammer.add(node_sprite)
         else:
