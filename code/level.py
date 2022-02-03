@@ -183,6 +183,14 @@ class Level:
         ponte_layout = import_csv_layout(level_data['ponte'])
         self.ponte_sprites = self.create_tile_group(ponte_layout, 'ponte')
 
+        # floresta
+        floresta_layout = import_csv_layout(level_data['floresta'])
+        self.floresta_sprites = self.create_tile_group(floresta_layout, 'floresta')
+
+        # chao_floresta
+        chao_floresta_layout = import_csv_layout(level_data['chao_floresta'])
+        self.chao_floresta_sprites = self.create_tile_group(chao_floresta_layout, 'chao_floresta')
+
         # enemies
         enemy_layout = import_csv_layout(level_data['enemies'])
         self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
@@ -217,12 +225,12 @@ class Level:
         self.anel_sprites = self.create_tile_group(anel_layout, 'anel')
 
         # chave
-        #chave_layout = import_csv_layout(level_data['chave'])
-        #self.chave_sprites = self.create_tile_group(chave_layout, 'chave')
+        chave_layout = import_csv_layout(level_data['chave'])
+        self.chave_sprites = self.create_tile_group(chave_layout, 'chave')
 
         # decoration
         level_width = (len(chao_layout[0]) - 77.5) * tile_size
-        #self.water = Water(screen_height - 35, level_width)
+        self.water = Water(screen_height - 35, level_width)
 
 
     def create_tile_group(self, layout, type):
@@ -402,6 +410,16 @@ class Level:
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         sprite_group.add(sprite)
 
+                    if type == 'floresta':
+                        tile_surface = tile_list_vegetation[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
+                    if type == 'chao_floresta':
+                        tile_surface = tile_list_vegetation[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface)
+                        sprite_group.add(sprite)
+
                     if type == 'enemies':
                         sprite = Enemy(tile_size, x, y, '../img/enemies/rat/run', 'run')
                         sprite_group.add(sprite)
@@ -473,7 +491,7 @@ class Level:
     def horizontal_movement_collision(self):
         player = self.player_sprite.sprite
         player.collision_rect.x += player.direction.x * player.speed
-        collidable_sprites = self.chao_sprite.sprites() + self.escada_sprites.sprites()
+        collidable_sprites = self.chao_sprite.sprites() + self.escada_sprites.sprites() + self.chao_floresta_sprites.sprites()
         for sprite in collidable_sprites:
             if sprite.rect.colliderect(player.collision_rect):
                 if player.direction.x < 0:
@@ -486,7 +504,7 @@ class Level:
     def vertical_movement_collision(self):
         player = self.player_sprite.sprite
         player.apply_gravity()
-        collidable_sprites = self.chao_sprite.sprites() + self.escada_sprites.sprites()
+        collidable_sprites = self.chao_sprite.sprites() + self.escada_sprites.sprites() + self.chao_floresta_sprites.sprites()
 
         for sprite in collidable_sprites:
             if sprite.rect.colliderect(player.collision_rect):
@@ -602,11 +620,10 @@ class Level:
         cor_ceu = (34, 27, 56)
         self.display_surface.fill(cor_ceu)
 
-        # CENA 1
+        # water
+        self.water.draw(self.display_surface, self.world_shift)
 
-        # parede subsolo
-        self.parede_subsolo_sprites.update(self.world_shift)
-        self.parede_subsolo_sprites.draw(self.display_surface)
+        # CENA 1
 
         # estrelas
         self.estrelas_sprites.update(self.world_shift)
@@ -624,10 +641,21 @@ class Level:
         self.chao_sprite.update(self.world_shift)
         self.chao_sprite.draw(self.display_surface)
 
+        # chão floresta
+        self.chao_floresta_sprites.update(self.world_shift)
+        self.chao_floresta_sprites.draw(self.display_surface)
+
+        # parede subsolo
+        self.parede_subsolo_sprites.update(self.world_shift)
+        self.parede_subsolo_sprites.draw(self.display_surface)
 
         # subsolo
         self.subsolo_sprites.update(self.world_shift)
         self.subsolo_sprites.draw(self.display_surface)
+
+        # floresta
+        self.floresta_sprites.update(self.world_shift)
+        self.floresta_sprites.draw(self.display_surface)
 
         # em cima subsolo
         self.subsolo_emcima_sprites.update(self.world_shift)
@@ -763,8 +791,8 @@ class Level:
         self.jardim_casa1_sprite.draw(self.display_surface)
 
         # chave
-        #self.chave_sprites.update(self.world_shift)
-        #self.chave_sprites.draw(self.display_surface)
+        self.chave_sprites.update(self.world_shift)
+        self.chave_sprites.draw(self.display_surface)
 
         # enemies
         self.enemy_sprites.update(self.world_shift)
@@ -788,8 +816,6 @@ class Level:
         self.scroll_x()
         self.player_sprite.draw(self.display_surface)
 
-        # water
-        #self.water.draw(self.display_surface, self.world_shift)
 
         self.cdClick += self.clock.tick(60)
 

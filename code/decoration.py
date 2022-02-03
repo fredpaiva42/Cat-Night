@@ -5,9 +5,9 @@ from tiles import AnimatedTile
 
 class Water:
     def __init__(self, top, level_width):
-        water_start = + screen_width * 1.564
+        water_start = + screen_width * 6.175
         water_tile_width = 192
-        tile_x_amount = int((level_width + screen_width * 2) / water_tile_width)
+        tile_x_amount = 14  # int((level_width + screen_width * 2) / water_tile_width)
         self.water_sprites = pygame.sprite.Group()
 
         for tile in range(tile_x_amount):
