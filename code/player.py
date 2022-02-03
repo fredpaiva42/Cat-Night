@@ -28,11 +28,11 @@ class Player(pygame.sprite.Sprite):
         # Arrow setup
         self.ready = True
         self.arrow_time = 0
-        self.arrow_cooldown = 800
+        self.arrow_cooldown = 2000
         self.arrows = pygame.sprite.Group()
 
         # Fireball setup
-        self.fire_cooldown = 800
+        self.fire_cooldown = 2000
         self.fires = pygame.sprite.Group()
 
         # player movement
@@ -152,13 +152,7 @@ class Player(pygame.sprite.Sprite):
             self.pressedQ = True
             self.attack = True
             self.attackCd = 0
-            if self.current_character == 3 and self.ready:
-                if self.facing_right:
-                    self.shoot_fire(self.speed)
-                else:
-                    self.shoot_fire(-self.speed)
-                self.ready = False
-                self.arrow_time = pygame.time.get_ticks()
+
         elif keys[pygame.K_w]:
             self.pressedW = True
             self.attack = True
@@ -168,6 +162,14 @@ class Player(pygame.sprite.Sprite):
                     self.shoot_arrow(self.speed, '../img/character/meowolas/arrow/right/')
                 else:
                     self.shoot_arrow(-self.speed, '../img/character/meowolas/arrow/left/')
+                self.ready = False
+                self.arrow_time = pygame.time.get_ticks()
+
+            if self.current_character == 3 and self.ready:
+                if self.facing_right:
+                    self.shoot_fire(self.speed)
+                else:
+                    self.shoot_fire(-self.speed)
                 self.ready = False
                 self.arrow_time = pygame.time.get_ticks()
         else:
