@@ -13,6 +13,8 @@ from defeat import Defeat
 from musicManager import MusicManager
 import settings
 from credits import Credits
+from victory import Victory
+from chest import Chest
 
 # Pygame setup
 pygame.init()
@@ -25,6 +27,8 @@ game = Game(musicManager)
 clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
 credits = Credits(screen)
+chest = Chest(screen)
+victory = Victory(screen)
 
 musicManager.loadMusic("menu", 0.1)
 
@@ -48,6 +52,11 @@ while True:
         game.defeat.run()
     if settings.GAME_STATE == 5:
         credits.run()
+    if settings.GAME_STATE == 6:
+        chest.run()
+    if settings.GAME_STATE == 7:
+        victory.run()
+
 
     pygame.display.update()
     clock.tick(60)  # define fps

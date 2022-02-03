@@ -22,7 +22,7 @@ class Cat(pygame.sprite.Sprite):
         self.animate()
 
 
-class Defeat():
+class Defeat:
     def __init__(self,current_character, max_character, surface):
         self.display_surface = surface
         self.display_surface = surface
