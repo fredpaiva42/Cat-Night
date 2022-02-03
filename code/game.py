@@ -9,6 +9,8 @@ from player import Player
 from menu_pause import MenuPause
 from help import Help
 import settings
+from defeat import Defeat
+from  defeat import Death
 
 
 class Game:
@@ -43,6 +45,8 @@ class Game:
         # user interface
         self.ui = UI(screen, current_character)
 
+        self.death = Death(current_character)
+
         self.inventory = Inventory(screen)
 
     def create_selection(self, current_character, new_max_character):
@@ -63,6 +67,8 @@ class Game:
         if self.cur_health <= 0:
             self.cur_health = 100
             settings.GAME_STATE = 4
+            self.selection = Selection(0, self.max_character, screen, self.create_level)
+            self.status = 'selection'
 
     def run(self):
         click = pygame.mouse.get_pressed()
