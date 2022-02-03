@@ -26,7 +26,7 @@ class Game:
 
         # initializing button pause, get position
         self.button_pause = pygame.image.load('../img/buttons/pause.png').convert_alpha()
-        self.button_rect = self.button_pause.get_rect(center=(1170, 50))
+        self.button_pause_rect = self.button_pause.get_rect(center=(1170, 50))
 
         #  initializing button help, get position
         self.button_help = pygame.image.load('../img/buttons/button_help.png').convert_alpha()
@@ -66,7 +66,7 @@ class Game:
 
     def run(self):
         click = pygame.mouse.get_pressed()
-        if self.button_rect.collidepoint(pygame.mouse.get_pos()):
+        if self.button_pause_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
                 settings.GAME_STATE = 2
         if self.button_help_rect.collidepoint(pygame.mouse.get_pos()):

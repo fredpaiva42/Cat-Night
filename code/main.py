@@ -10,6 +10,7 @@ from menu import Menu
 from menu_pause import MenuPause
 from help import Help
 from defeat import Defeat
+from musicManager import MusicManager
 import settings
 
 # Pygame setup
@@ -20,8 +21,11 @@ menu_pause = MenuPause(screen)
 bt_help = Help(screen)
 game = Game()
 defeat = Defeat(game.selection.current_character, 3, screen)
+musicManager = MusicManager()
 clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
+
+musicManager.loadMusic("menu", 0.1)
 
 while True:
     for event in pygame.event.get():
