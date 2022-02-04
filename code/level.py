@@ -659,7 +659,7 @@ class Level:
         if self.boss_sprite.sprite.grenades:
             for grenade in self.boss_sprite.sprite.grenades:
                 if grenade.rect.colliderect(player.rect):
-                    self.player_sprite.sprite.get_damage(-10)
+                    self.player_sprite.sprite.get_damage(-15)
 
 
     def arrow_collision_check(self):
