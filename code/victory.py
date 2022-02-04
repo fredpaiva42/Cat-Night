@@ -55,5 +55,5 @@ class Victory:
         self.show_buttons()
 
         if keys[pygame.K_ESCAPE]:
-            settings.GAME_STATE = 0
+            settings.GAME_STATE = -1
 

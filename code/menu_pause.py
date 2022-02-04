@@ -33,8 +33,7 @@ class MenuPause:
 
         if self.button_home_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
-                settings.GAME_STATE = 0
-                musicManager.loadMusic("menu", 0.1)
+                settings.GAME_STATE = -1
 
         if self.button_resume_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:

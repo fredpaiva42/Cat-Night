@@ -36,7 +36,7 @@ class Boss(Enemy):
     def __init__(self, size, x, y, path ,type):
         super().__init__(size, x, y, path, type)
         self.total_hp = 150
-        self.hp = 150
+        self.hp = 30
         self.speed = 2
 
         # attack setup
