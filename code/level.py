@@ -35,6 +35,13 @@ class Level:
         self.player_sprite = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout, change_health, bar_health_reset, cur_health)
+        self.player_damage = 10
+
+        # boss
+        boss_layout = import_csv_layout(level_data['boss'])
+        self.boss_sprite = pygame.sprite.GroupSingle()
+        self.boss_setup(boss_layout)
+        self.is_final_fight = False
 
         # item
         self.item_id = 0
@@ -199,11 +206,6 @@ class Level:
         # enemies
         enemy_layout = import_csv_layout(level_data['enemies'])
         self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
-
-        # boss
-        boss_layout = import_csv_layout(level_data['boss'])
-        self.boss_sprites = self.create_tile_group(boss_layout, 'boss')
-        self.is_final_fight = False
 
         # constraints
         constraints_layout = import_csv_layout(level_data['constraints'])
@@ -443,10 +445,6 @@ class Level:
                         sprite = Enemy(tile_size, x, y, '../img/enemies/rat/run', 'run')
                         sprite_group.add(sprite)
 
-                    if type == 'boss':
-                        sprite = Boss(tile_size, x, y, '../img/enemies/dog/run', 'run')
-                        sprite_group.add(sprite)
-
                     if type == 'constraints':
                         sprite = Tile(tile_size, x, y)
                         sprite_group.add(sprite)
@@ -498,15 +496,24 @@ class Level:
                                     change_health, bar_health_reset, cur_health)
                     self.player_sprite.add(sprite)
 
+    def boss_setup(self, layout):
+        for row_index, row in enumerate(layout):
+            for col_index, val in enumerate(row):
+                x = col_index * tile_size
+                y = row_index * tile_size
+                if val == '0':
+                    sprite = Boss(tile_size, x, y, '../img/enemies/dog/run', 'run')
+                    self.boss_sprite.add(sprite)
+
     def rat_collision_reverse(self):
         for enemy in self.enemy_sprites.sprites():
             if pygame.sprite.spritecollide(enemy, self.constraints_sprites, False):
                 enemy.reverse()
 
     def boss_collision_reverse(self):
-        for boss in self.boss_sprites.sprites():
-            if pygame.sprite.spritecollide(boss, self.constraints_sprites, False):
-                boss.reverse()
+        boss = self.boss_sprite.sprite
+        if pygame.sprite.spritecollide(boss, self.constraints_sprites, False):
+            boss.reverse()
 
     def create_jump_particles(self, pos):
         if self.player.sprite.facing_right:
@@ -548,6 +555,7 @@ class Level:
                     if sprite in self.chao_floresta_sprites.sprites():
                         self.is_final_fight = True
                         self.musicManager.loadMusic("boss_fight", 0.1)
+                        player.cur_health = 100
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
@@ -588,11 +596,6 @@ class Level:
             self.bar_health_reset(self.cur_health)
             self.status = 'selection'
 
-    def check_win(self):
-        if pygame.sprite.spritecollide(self.player_sprite.sprite, self.goal, False):
-            self.create_selection(self.current_character, self.new_max_character)
-            print("Win")
-
     def check_enemy_collisions(self):
         enemy_collisions = pygame.sprite.spritecollide(self.player_sprite.sprite, self.enemy_sprites, False)
 
@@ -608,26 +611,30 @@ class Level:
                      self.player_sprite.sprite.get_damage(-10)
 
     def check_boss_collisions(self):
-        boss_collisions = pygame.sprite.spritecollide(self.player_sprite.sprite, self.boss_sprites, False)
-
-        if boss_collisions:
-            for boss in boss_collisions:
-                if self.player_sprite.sprite.attack:
-                    boss.hp -= 5
-                    print(boss.hp)
-                else:
-                    self.player_sprite.sprite.get_damage(-20)
+        boss = self.boss_sprite
+        player = self.player_sprite.sprite
+        #boss_collisions = pygame.sprite.spritecollide(player, boss, False)
+        #boss_rect = boss.sprite.get_rect()
+        if boss.sprite.rect.colliderect(player.attack_collision_rect) and self.player_sprite.sprite.attack and not boss.sprite.invincible:
+            print("atacou")
+            boss.sprite.hp -= self.player_damage
+            boss.sprite.invincible = True
+            boss.sprite.hurt_time = pygame.time.get_ticks()
+            print(boss.sprite.hp)
+        if boss.sprite.rect.colliderect(player.collision_rect):
+            print("colidiu")
+            player.get_damage(-10)
 
     def check_boss_death(self):
-        for boss in self.boss_sprites:
-            if boss.hp <= 0:
-                death_sprite = ParticleEffect(boss.rect.center, 'boss_death')
-                self.boss_death_sprite.add(death_sprite)
-                boss.kill()
-                self.boss_death = True
-                # adiciona a chave ao dict para poder colectar
-                self.items_dict[self.chave_sprites] = 7
-                self.musicManager.loadMusic("victory", 0.1)
+        boss = self.boss_sprite.sprite
+        if boss and boss.hp <= 0:
+            death_sprite = ParticleEffect(boss.rect.center, 'boss_death')
+            self.boss_death_sprite.add(death_sprite)
+            boss.kill()
+            self.boss_death = True
+            # adiciona a chave ao dict para poder colectar
+            self.items_dict[self.chave_sprites] = 7
+            self.musicManager.loadMusic("victory", 0.1)
 
     def check_got_item(self):
         player = self.player_sprite.sprite
@@ -643,13 +650,26 @@ class Level:
                         self.item_id = idItem
                         sprites.remove(item)
 
-    def collision_check(self):
+    def granade_collision_check(self):
+        player = self.player_sprite.sprite
+        if self.boss_sprite.sprite.grenades:
+            for grenade in self.boss_sprite.sprite.grenades:
+                if grenade.rect.colliderect(player.rect):
+                    self.player_sprite.sprite.get_damage(-10)
+
+
+    def arrow_collision_check(self):
+        boss_sprite = self.boss_sprite.sprite
         if self.player_sprite.sprite.arrows:
             for arrow in self.player_sprite.sprite.arrows:
                 if pygame.sprite.spritecollide(arrow, self.enemy_sprites, True):
                     death_sprite = ParticleEffect(arrow.rect.center, 'rat_death')
                     self.rat_death_sprite.add(death_sprite)
                     arrow.kill()
+                if arrow.spritecollide(boss_sprite, True) and not boss_sprite.invincible:
+                    boss_sprite.hp -= self.player_damage
+                    boss_sprite.invincible = True
+                    boss_sprite.hurt_time = pygame.time.get_ticks()
 
     def run(self):
         # onde vou executar o nivel
@@ -846,12 +866,18 @@ class Level:
 
         # boss
         # boss health bar
-        if self.is_final_fight:
-            for boss in self.boss_sprites.sprites():
-                boss.show_boss_health(self.display_surface)
-        self.boss_sprites.update(self.world_shift)
-        self.boss_collision_reverse()
-        self.boss_sprites.draw(self.display_surface)
+        if self.is_final_fight and not self.boss_death:
+            self.boss_sprite.sprite.run()
+            self.boss_sprite.sprite.show_boss_health(self.display_surface)
+            self.boss_sprite.sprite.grenades.draw(self.display_surface)
+
+        if not self.boss_death:
+            self.boss_sprite.update(self.world_shift)
+            self.boss_collision_reverse()
+            self.boss_sprite.draw(self.display_surface)
+            self.check_boss_collisions()
+            self.granade_collision_check()
+
         self.boss_death_sprite.update(self.world_shift)
         self.boss_death_sprite.draw(self.display_surface)
 
@@ -868,12 +894,9 @@ class Level:
         self.scroll_x()
         self.player_sprite.draw(self.display_surface)
 
-
-        self.check_win()
         self.check_death()
 
         self.check_enemy_collisions()
-        self.check_boss_collisions()
         self.check_boss_death()
-        self.collision_check()
+        self.arrow_collision_check()
         self.check_got_item()

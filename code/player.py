@@ -31,9 +31,6 @@ class Player(pygame.sprite.Sprite):
         self.arrow_cooldown = 2000
         self.arrows = pygame.sprite.Group()
 
-        # Fireball setup
-        self.fire_cooldown = 2000
-        self.fires = pygame.sprite.Group()
 
         # player movement
         self.direction = pygame.math.Vector2(0, 0)
@@ -41,6 +38,7 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0.8
         self.jump_speed = -18
         self.collision_rect = pygame.Rect(self.rect.topleft, (55, self.rect.height))  # depois preciso padronizar
+        self.attack_collision_rect = pygame.Rect(self.rect.left - 60, self.rect.top, self.rect.width + 120, self.rect.height)
         self.attackCd = 0
         self.pressedQ = False
         self.pressedW = False
@@ -60,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         self.bar_health_reset = bar_health_reset
         self.cur_health = cur_health
         self.invincible = False
-        self.invincibility_duration = 400
+        self.invincibility_duration = 1000
         self.hurt_time = 0
 
     def import_character_assets(self):

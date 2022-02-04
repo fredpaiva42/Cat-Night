@@ -66,4 +66,4 @@ class Defeat:
 
         if self.button_back_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
-                settings.GAME_STATE = 0
+                settings.GAME_STATE = -1
