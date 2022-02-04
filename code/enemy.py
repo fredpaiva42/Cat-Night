@@ -35,8 +35,8 @@ class Enemy(AnimatedTile):
 class Boss(Enemy):
     def __init__(self, size, x, y, path ,type):
         super().__init__(size, x, y, path, type)
-        self.total_hp = 150
-        self.hp = 30
+        self.total_hp = 50 #150
+        self.hp = 50
         self.speed = 2
 
         # attack setup
@@ -51,6 +51,7 @@ class Boss(Enemy):
         self.invincible = False
         self.invincibility_duration = 400
         self.hurt_time = 0
+        self.rage = False
 
         # health bar
         self.bar_max_width = 300
@@ -61,13 +62,20 @@ class Boss(Enemy):
         current_bar_width = self.bar_max_width * current_health_ratio
         pygame.draw.rect(display_surface, '#FF0044', (550,120,int(current_bar_width),20))
 
-        if current_health_ratio <= 1/4:
+        if current_health_ratio <= 1/3:
+            self.rage = True
             self.minimal_cd = 3000
             self.maximal_cd = 5000
 
     def attack(self):
-        self.grenades.add(Grenade(self.rect.center, self.grenade_speed, self.rect.x))
-        self.grenades.add(Grenade(self.rect.center, -self.grenade_speed, self.rect.x))
+        if self.speed > 0:
+            self.grenades.add(Grenade(self.rect.center, self.grenade_speed, self.rect.x))
+            if self.rage:
+                self.grenades.add(Grenade(self.rect.center, -self.grenade_speed, self.rect.x))
+        else:
+            self.grenades.add(Grenade(self.rect.center, -self.grenade_speed, self.rect.x))
+            if self.rage:
+                self.grenades.add(Grenade(self.rect.center, self.grenade_speed, self.rect.x))
         self.ready = False
         self.grenade_time = pygame.time.get_ticks()
 
