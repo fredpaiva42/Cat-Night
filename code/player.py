@@ -31,6 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.arrow_cooldown = 2000
         self.arrows = pygame.sprite.Group()
 
+        self.fire_cooldown = 2000
+
 
         # player movement
         self.direction = pygame.math.Vector2(0, 0)

@@ -33,11 +33,12 @@ class Enemy(AnimatedTile):
         self.reverse_image()
 
 class Boss(Enemy):
-    def __init__(self, size, x, y, path ,type):
+    def __init__(self, size, x, y, path ,type, musicManager):
         super().__init__(size, x, y, path, type)
-        self.total_hp = 50 #150
-        self.hp = 50
+        self.total_hp = 120 #150
+        self.hp = 120
         self.speed = 2
+        self.musicManager = musicManager
 
         # attack setup
         self.minimal_cd = 7000
@@ -54,18 +55,26 @@ class Boss(Enemy):
         self.rage = False
 
         # health bar
-        self.bar_max_width = 300
+        self.health_bar = pygame.image.load("../ui/boss_stats.png").convert_alpha()
+        self.bar_max_width = 298
         self.bar_height = 8
 
     def show_boss_health(self, display_surface):
+        display_surface.blit(self.health_bar, (435, 45))
         current_health_ratio = self.hp / self.total_hp
         current_bar_width = self.bar_max_width * current_health_ratio
-        pygame.draw.rect(display_surface, '#FF0044', (550,120,int(current_bar_width),20))
+        pygame.draw.rect(display_surface, '#FF0044', (544,117,int(current_bar_width),9))
 
-        if current_health_ratio <= 1/3:
-            self.rage = True
-            self.minimal_cd = 3000
-            self.maximal_cd = 5000
+        if not self.rage:
+            if current_health_ratio <= 1/3:
+                self.rage = True
+                self.minimal_cd = 1000
+                self.maximal_cd = 5000
+                self.musicManager.loadMusic("rage", 0.1)
+                if self.speed > 0:
+                    self.speed += 2
+                else:
+                    self.speed -= 2
 
     def attack(self):
         if self.speed > 0:

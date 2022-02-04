@@ -10,6 +10,7 @@ class MusicManager:
         self.sounds["menu"] = "../sound/music/title.wav"
         self.sounds["background"] = "../sound/music/background.wav"
         self.sounds["boss_fight"] = "../sound/music/boss_fight.wav"
+        self.sounds["rage"] = "../sound/music/rage_boss_fight.wav"
         self.sounds["win"] = "../sound/music/background.wav"
         self.sounds["defeat"] = "../sound/music/defeat.wav"
         self.sounds["victory"] = "../sound/music/victory.wav"

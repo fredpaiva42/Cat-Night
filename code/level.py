@@ -502,7 +502,7 @@ class Level:
                 x = col_index * tile_size
                 y = row_index * tile_size
                 if val == '0':
-                    sprite = Boss(tile_size, x, y, '../img/enemies/dog/run', 'run')
+                    sprite = Boss(tile_size, x, y, '../img/enemies/dog/run', 'run', self.musicManager)
                     self.boss_sprite.add(sprite)
 
     def rat_collision_reverse(self):
@@ -666,6 +666,7 @@ class Level:
                     if arrow.rect.colliderect(enemy.rect):
                         death_sprite = ParticleEffect(enemy.rect.center, 'rat_death')
                         self.rat_death_sprite.add(death_sprite)
+                        self.alive = False
                         enemy.kill()
                         arrow.kill()
                 if arrow.rect.colliderect(boss_sprite.rect) and not boss_sprite.invincible:
@@ -873,6 +874,7 @@ class Level:
             self.boss_sprite.sprite.run()
             self.boss_sprite.sprite.show_boss_health(self.display_surface)
             self.boss_sprite.sprite.grenades.draw(self.display_surface)
+
 
         if not self.boss_death:
             self.boss_sprite.update(self.world_shift)
