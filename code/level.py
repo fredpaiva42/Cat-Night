@@ -1,6 +1,6 @@
 import pygame
 from support import import_csv_layout, import_cut_graphics
-from settings import tile_size, screen_height, screen_width, screen
+from settings import tile_size, screen_height, screen_width, SOUND
 from tiles import Tile, StaticTile
 from player import Player
 from decoration import Water
@@ -555,7 +555,8 @@ class Level:
                 if not self.is_final_fight:
                     if sprite in self.chao_floresta_sprites.sprites():
                         self.is_final_fight = True
-                        self.musicManager.loadMusic("boss_fight", 0.1)
+                        if SOUND:
+                            self.musicManager.loadMusic("boss_fight", 0.1)
                         player.cur_health = 100
 
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
@@ -616,15 +617,16 @@ class Level:
         player = self.player_sprite.sprite
         #boss_collisions = pygame.sprite.spritecollide(player, boss, False)
         #boss_rect = boss.sprite.get_rect()
-        if boss.sprite.rect.colliderect(player.attack_collision_rect) and self.player_sprite.sprite.attack and not boss.sprite.invincible:
-            print("atacou")
-            boss.sprite.hp -= self.player_damage
-            boss.sprite.invincible = True
-            boss.sprite.hurt_time = pygame.time.get_ticks()
-            print(boss.sprite.hp)
-        if boss.sprite.rect.colliderect(player.collision_rect):
-            print("colidiu")
-            player.get_damage(-10)
+        if pygame.sprite.spritecollide(player, boss, False):
+            if self.player_sprite.sprite.attack and not boss.sprite.invincible:
+                print("atacou")
+                boss.sprite.hp -= self.player_damage
+                boss.sprite.invincible = True
+                boss.sprite.hurt_time = pygame.time.get_ticks()
+                print(boss.sprite.hp)
+            elif not boss.sprite.invincible:
+                print("colidiu")
+                player.get_damage(-10)
 
     def check_boss_death(self):
         boss = self.boss_sprite.sprite

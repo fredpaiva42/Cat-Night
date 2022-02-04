@@ -9,12 +9,14 @@ import settings
 from credits import Credits
 from victory import Victory
 from chest import Chest
+from story import Story
 
 
 def reset_setup():
     menu = Menu(screen)
     game = Game(musicManager)
     settings.COLLECTED_ALL = False
+    settings.SOUND = True
     return menu, game
 
 pygame.init()
@@ -26,6 +28,7 @@ clock = pygame.time.Clock()
 bg = pygame.image.load("../img/background/selection_menu.png").convert()
 credits = Credits(screen)
 chest = Chest(screen)
+story = Story(screen)
 
 
 while True:
@@ -42,6 +45,8 @@ while True:
     if settings.GAME_STATE == 0:
         screen.fill('black')
         menu.run()
+    if settings.GAME_STATE == -2:
+        story.run()
     if settings.GAME_STATE == 1:
         screen.blit(bg, (0, 0))
         game.run()

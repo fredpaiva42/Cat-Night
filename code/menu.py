@@ -33,7 +33,7 @@ class Menu:
 
         if self.button_play_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
-                settings.GAME_STATE = 1
+                settings.GAME_STATE = -2
 
         if self.button_credits_rect.collidepoint(pygame.mouse.get_pos()):
             if click[0] == 1:
