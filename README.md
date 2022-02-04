@@ -9,7 +9,7 @@ Cat Night é um jogo para desktop em desenvolvimento como projeto final para a d
 ![](./img/img_readme/screenSelection.jpg)
 
 ## Jogo
-![](./img/img_readme/Tela do jogo.jpg)
+![](./img/img_readme/Tela%20do%20jogo.jpg)
 
 ## Menu Pause
 ![](./img/img_readme/pause.jpg)
