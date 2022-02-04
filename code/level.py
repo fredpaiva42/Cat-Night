@@ -662,14 +662,17 @@ class Level:
         boss_sprite = self.boss_sprite.sprite
         if self.player_sprite.sprite.arrows:
             for arrow in self.player_sprite.sprite.arrows:
-                if pygame.sprite.spritecollide(arrow, self.enemy_sprites, True):
-                    death_sprite = ParticleEffect(arrow.rect.center, 'rat_death')
-                    self.rat_death_sprite.add(death_sprite)
-                    arrow.kill()
-                if arrow.spritecollide(boss_sprite, True) and not boss_sprite.invincible:
+                for enemy in self.enemy_sprites:
+                    if arrow.rect.colliderect(enemy.rect):
+                        death_sprite = ParticleEffect(enemy.rect.center, 'rat_death')
+                        self.rat_death_sprite.add(death_sprite)
+                        enemy.kill()
+                        arrow.kill()
+                if arrow.rect.colliderect(boss_sprite.rect) and not boss_sprite.invincible:
                     boss_sprite.hp -= self.player_damage
                     boss_sprite.invincible = True
                     boss_sprite.hurt_time = pygame.time.get_ticks()
+                    arrow.kill()
 
     def run(self):
         # onde vou executar o nivel
