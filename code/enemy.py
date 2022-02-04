@@ -35,8 +35,8 @@ class Enemy(AnimatedTile):
 class Boss(Enemy):
     def __init__(self, size, x, y, path ,type, musicManager):
         super().__init__(size, x, y, path, type)
-        self.total_hp = 120 #150
-        self.hp = 120
+        self.total_hp = 20 #150
+        self.hp = 20
         self.speed = 2
         self.musicManager = musicManager
 

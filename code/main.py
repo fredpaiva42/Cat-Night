@@ -14,6 +14,7 @@ from chest import Chest
 def reset_setup():
     menu = Menu(screen)
     game = Game(musicManager)
+    settings.COLLECTED_ALL = False
     return menu, game
 
 pygame.init()
@@ -53,9 +54,8 @@ while True:
     if settings.GAME_STATE == 5:
         credits.run()
     if settings.GAME_STATE == 6:
-        chest.run(game.inventory.collected_all())
+        chest.run()
     if settings.GAME_STATE == 7 or settings.GAME_STATE == 8:
-        print(settings.GAME_STATE)
         victory = Victory(screen)
         victory.run()
 

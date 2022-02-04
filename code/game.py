@@ -88,5 +88,5 @@ class Game:
             self.ui.show_health(self.cur_health, self.max_health)
             self.ui.show_pause_button()
             self.ui.show_help_button()
-            self.inventory.run(self.level.got_item, self.level.item_id)
+            self.inventory.run(self.level.got_item, self.level.item_id, self.level.qtd_items_collected)
             self.check_game_over()

@@ -53,10 +53,12 @@ class Inventory:
         self.image = pygame.image.load('../ui/inventario.png').convert_alpha()
         self.inventory_rect = self.image.get_rect(center=(900, 50))
 
-    def collected_all(self):
-        return (len(self.slots)) >= 6
+    def check_all_collected(self, qtd):
+        if qtd >= 7:
+            settings.COLLECTED_ALL = True
 
-    def run(self, got_item, id_item):
+    def run(self, got_item, id_item, qtd_collected):
+        self.check_all_collected(qtd_collected)
         self.surface.blit(self.image, self.inventory_rect)
         for slot in self.slots:
             slot.run(self.surface)

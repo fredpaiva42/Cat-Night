@@ -46,6 +46,7 @@ class Level:
         # item
         self.item_id = 0
         self.got_item = False
+        self.qtd_items_collected = 0
 
         # dust
         self.dust_sprite = pygame.sprite.GroupSingle()
@@ -648,6 +649,7 @@ class Level:
                         self.musicManager.loadSound("item_collect", 0.2)
                         self.got_item = True
                         self.item_id = idItem
+                        self.qtd_items_collected += 1
                         sprites.remove(item)
 
     def granade_collision_check(self):
@@ -669,11 +671,12 @@ class Level:
                         self.alive = False
                         enemy.kill()
                         arrow.kill()
-                if arrow.rect.colliderect(boss_sprite.rect) and not boss_sprite.invincible:
-                    boss_sprite.hp -= self.player_damage
-                    boss_sprite.invincible = True
-                    boss_sprite.hurt_time = pygame.time.get_ticks()
-                    arrow.kill()
+                if arrow:
+                    if arrow.rect.colliderect(boss_sprite.rect) and not boss_sprite.invincible:
+                        boss_sprite.hp -= self.player_damage
+                        boss_sprite.invincible = True
+                        boss_sprite.hurt_time = pygame.time.get_ticks()
+                        arrow.kill()
 
     def run(self):
         # onde vou executar o nivel

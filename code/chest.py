@@ -42,7 +42,7 @@ class Chest:
             node_sprite = Bau((650, 336), "../img/chest/")
             self.chest.add(node_sprite)
 
-        def run(self, collected_all):
+        def run(self):
             click = pygame.mouse.get_pressed()
 
             self.chest.update()
@@ -52,7 +52,7 @@ class Chest:
 
             if self.button_continue_rect.collidepoint(pygame.mouse.get_pos()):
                 if click[0] == 1:
-                    if collected_all:
-                        settings.GAME_STATE = 7
-                    else:
+                    if not settings.COLLECTED_ALL:
                         settings.GAME_STATE = 8
+                    else:
+                        settings.GAME_STATE = 7
