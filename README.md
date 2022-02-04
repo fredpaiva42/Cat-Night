@@ -15,31 +15,31 @@ Cat Night é um jogo para desktop em desenvolvimento como projeto final para a d
 ![](./img/img_readme/pause.jpg)
 
 ## Menu ajuda
-![](./img/img_readme/tela de ajuda.jpg)
+![](./img/img_readme/tela%20de%20ajuda.jpg)
 
 # Cena de transição
 ![](./img/img_readme/Plataformas.jpg)
 
 # Cena Final
-![](./img/img_readme/Cena final.jpg)
+![](./img/img_readme/Cena%20final.jpg)
 
 # Tela de derrota
-![](./img/img_readme/derrota 0.jpg)
-![](./img/img_readme/tela de derrota.jpg)
-![](./img/img_readme/derrota 2.jpg)
-![](./img/img_readme/derrota 3.jpg)
+![](./img/img_readme/derrota%200.jpg)
+![](./img/img_readme/tela%20de%20derrota.jpg)
+![](./img/img_readme/derrota%202.jpg)
+![](./img/img_readme/derrota%203.jpg)
 
 # Baú
-![](./img/img_readme/tela bau.jpg)
+![](./img/img_readme/tela%20bau.jpg)
 
 # Tela de vitória
-![](./img/img_readme/Tela de vitória.jpg)
+![](./img/img_readme/Tela%20de%20vitória.jpg)
 
 # GUI
-![](./img/img_readme/GUI 0.jpg)
-![](./img/img_readme/GUI 1.jpg)
-![](./img/img_readme/GUI 2.jpg)
-![](./img/img_readme/GUI 3.jpg)
+![](./img/img_readme/GUI%200.jpg)
+![](./img/img_readme/GUI%201.jpg)
+![](./img/img_readme/GUI%202.jpg)
+![](./img/img_readme/GUI%203.jpg)
 
 # Créditos
 ![](./img/img_readme/creditos.jpg)
